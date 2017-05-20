@@ -33,7 +33,7 @@ def reverse():
     GPIO.output(GPIO_B2, True)
     return
 
-def turn1():
+def right():
     # set Trigger to HIGH
     GPIO.output(GPIO_A1, True)
     GPIO.output(GPIO_A2, False)
@@ -41,7 +41,7 @@ def turn1():
     GPIO.output(GPIO_B2, True)
     return
 
-def turn2():
+def left():
     # set Trigger to HIGH
     GPIO.output(GPIO_A1, False)
     GPIO.output(GPIO_A2, True)
@@ -60,10 +60,10 @@ if __name__ == '__main__':
             print ("Going backward")
             reverse()
             time.sleep(3)
-            print ("Going turn1")
+            print ("Going right")
             turn1()
             time.sleep(3)
-            print ("Going turn2")
+            print ("Going left")
             turn2()
             time.sleep(3)
             
