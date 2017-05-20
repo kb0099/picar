@@ -6,10 +6,10 @@ import time
 GPIO.setmode(GPIO.BCM)
  
 #set GPIO Pins
-GPIO_A1 = 18
-GPIO_A2 = 24
-GPIO_B1 = 1
-GPIO_B2 = 2
+GPIO_A1 = 2
+GPIO_A2 = 3
+GPIO_B1 = 14
+GPIO_B2 = 15
  
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_A1, GPIO.OUT)
