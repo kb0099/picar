@@ -95,9 +95,9 @@ if __name__ == '__main__':
             dist = distance()
             print ("Measured Distance = %.1f cm" % dist)
             # if-else to set forward or stop
-            if dist > 25
+            if dist > 25:
                 forward()
-            else
+            else:
                 stop()
             time.sleep(1)
  
