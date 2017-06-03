@@ -99,7 +99,8 @@ if __name__ == '__main__':
                 forward()
             else:
                 stop()
-            time.sleep(1)
+		break
+            time.sleep(0.1)
  
         # Reset by pressing CTRL + C
     except KeyboardInterrupt:
