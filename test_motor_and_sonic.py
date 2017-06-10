@@ -26,6 +26,13 @@ GPIO.setup(GPIO_B2, GPIO.OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT) #c
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
+
+#Initial Pwm
+p1 = GPIO.PWM(2, 100)
+p2 = GPIO.PWM(14, 100)
+p1.start(0);
+p2.start(0);
+
 def forward(speed):
     # set Trigger to HIGH
     #GPIO.output(GPIO_A1, True)
@@ -33,15 +40,10 @@ def forward(speed):
     #GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
 
-
-    p1 = GPIO.PWM(2, 100)
-    p2 = GPIO.PWM(14, 100)
-
-    p1.start(speed)
-    p2.start(speed)
-
-    time.sleep(3)
-
+    for ii in range (10):
+        p1.ChangeDutyCycle(speed)
+        p2.ChangeDutyCycle(speed)
+        time.sleep(0.1)
     p1.stop()
     p2.stop()
 
