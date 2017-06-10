@@ -1,6 +1,7 @@
 #Libraries
 import RPi.GPIO as GPIO
 import time
+from RPIO import PWM
  
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -13,6 +14,8 @@ GPIO_B2 = 15
 
 GPIO_TRIGGER = 18
 GPIO_ECHO = 24
+
+servo = PWM.Servo()
  
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_A1, GPIO.OUT)
@@ -23,12 +26,15 @@ GPIO.setup(GPIO_B2, GPIO.OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT) #c
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
-def forward():
+def forward(speed):
     # set Trigger to HIGH
     GPIO.output(GPIO_A1, True)
     GPIO.output(GPIO_A2, False)
     GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
+
+    servo.set_servo(GPIO_A1, speed)
+    servo.set_servo(GPIO_B1, speed)
     return
 
 def reverse():
@@ -94,13 +100,19 @@ if __name__ == '__main__':
         while True:
             dist = distance()
             print ("Measured Distance = %.1f cm" % dist)
+            forward(4000)
+            time.sleep(3)
+            forward(8000)
+            time.sleep(3)
+            forward(12000)
+            time.sleep(3)
             # if-else to set forward or stop
-            if dist > 25:
-                forward()
-            else:
-                stop()
-		break
-            time.sleep(0.1)
+            #if dist > 25:
+            #    forward()
+            #else:
+            #    stop()
+		#break
+            #time.sleep(0.1)
  
         # Reset by pressing CTRL + C
     except KeyboardInterrupt:
