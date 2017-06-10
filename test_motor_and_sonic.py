@@ -111,14 +111,17 @@ def distance():
  
 if __name__ == '__main__':
     try:
-        while True:
-            dist = distance()
-            print ("Measured Distance = %.1f cm" % dist)
-            forward(25)
-            #time.sleep(3)
-            forward(50)
-            #time.sleep(3)
-            forward(75)
+        # while True:
+        dist = distance()
+        print ("Measured Distance = %.1f cm" % dist)
+        print "speed 1"
+        forward(1)
+        #time.sleep(3)
+        print "speed 2"
+        forward(10)
+        #time.sleep(3)
+        print "speed 3"
+        forward(100)
             #time.sleep(3)
             # if-else to set forward or stop
             #if dist > 25:
