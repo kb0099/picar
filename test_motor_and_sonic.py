@@ -40,12 +40,10 @@ def forward(speed):
     #GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
 
-    for ii in range (20):
-        p1.ChangeDutyCycle(speed)
-        p2.ChangeDutyCycle(speed)
-        time.sleep(0.1)
-    p1.stop()
-    p2.stop()
+    #for ii in range (20):
+    p1.ChangeDutyCycle(speed)
+    p2.ChangeDutyCycle(speed)
+    
 
     #servo.set_servo(GPIO_A1, speed)
     #servo.set_servo(GPIO_B1, speed)
@@ -116,13 +114,13 @@ if __name__ == '__main__':
         # print ("Measured Distance = %.1f cm" % dist)
         print "speed 1"
         forward(20)
-        #time.sleep(3)
+        time.sleep(3)
         print "speed 2"
         forward(50)
-        #time.sleep(3)
+        time.sleep(3)
         print "speed 3"
         forward(100)
-            #time.sleep(3)
+        time.sleep(3)
             # if-else to set forward or stop
             #if dist > 25:
             #    forward()
@@ -135,3 +133,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         GPIO.cleanup()
+        p1.stop()
+        p2.stop()
