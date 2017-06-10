@@ -40,7 +40,7 @@ def forward(speed):
     #GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
 
-    for ii in range (10):
+    for ii in range (20):
         p1.ChangeDutyCycle(speed)
         p2.ChangeDutyCycle(speed)
         time.sleep(0.1)
@@ -112,13 +112,13 @@ def distance():
 if __name__ == '__main__':
     try:
         # while True:
-        dist = distance()
-        print ("Measured Distance = %.1f cm" % dist)
+        # dist = distance()
+        # print ("Measured Distance = %.1f cm" % dist)
         print "speed 1"
-        forward(1)
+        forward(20)
         #time.sleep(3)
         print "speed 2"
-        forward(10)
+        forward(50)
         #time.sleep(3)
         print "speed 3"
         forward(100)
