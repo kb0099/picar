@@ -28,9 +28,9 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 def forward(speed):
     # set Trigger to HIGH
-    GPIO.output(GPIO_A1, True)
+    #GPIO.output(GPIO_A1, True)
     GPIO.output(GPIO_A2, False)
-    GPIO.output(GPIO_B1, True)
+    #GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
 
     servo.set_servo(GPIO_A1, speed)
