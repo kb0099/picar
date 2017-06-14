@@ -113,14 +113,29 @@ if __name__ == '__main__':
         # dist = distance()
         # print ("Measured Distance = %.1f cm" % dist)
         print "speed 1"
-        forward(20)
-        time.sleep(3)
+        forward(30)
+        time.sleep(10)
+	p1.ChangeDutyCycle(0)
+        p2.ChangeDutyCycle(0)
+	time.sleep(2)
+
         print "speed 2"
         forward(50)
-        time.sleep(3)
-        print "speed 3"
+        time.sleep(3)	
+        p1.ChangeDutyCycle(0)
+        p2.ChangeDutyCycle(0)
+	time.sleep(2)
+
+	print "speed 3"
         forward(100)
-        time.sleep(3)
+	time.sleep(3)
+
+	# End
+        p1.stop()
+        p2.stop()
+	GPIO.cleanup()
+
+
             # if-else to set forward or stop
             #if dist > 25:
             #    forward()
@@ -132,6 +147,4 @@ if __name__ == '__main__':
         # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
-        GPIO.cleanup()
-        p1.stop()
-        p2.stop()
+       
