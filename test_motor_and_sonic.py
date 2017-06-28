@@ -28,10 +28,10 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-p1 = GPIO.PWM(GPIO_A1, 1000)
-p2 = GPIO.PWM(GPIO_B1, 1000)
-p1.start(0);
-p2.start(0);
+p1 = GPIO.PWM(GPIO_A1, 100)
+p2 = GPIO.PWM(GPIO_B1, 100)
+p1.start(100);
+p2.start(30);
 
 def forward(speed):
     # set Trigger to HIGH
@@ -42,7 +42,7 @@ def forward(speed):
 
     #for ii in range (20):
     p1.ChangeDutyCycle(100) 		# left
-    p2.ChangeDutyCycle(100)		# right
+    #p2.ChangeDutyCycle(100)		# right
     
 
     #servo.set_servo(GPIO_A1, speed)
@@ -147,8 +147,8 @@ if __name__ == '__main__':
             #time.sleep(0.1)
     try:
         #time.sleep(3);
-        forward(75);
-        time.sleep(4);
+        #forward(75);
+        time.sleep(10);
 
         stop();
         p1.stop();
