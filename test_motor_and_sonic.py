@@ -146,7 +146,7 @@ if __name__ == '__main__':
 		#break
             #time.sleep(0.1)
     try:
-        time.sleep(3);
+        #time.sleep(3);
         forward(75);
         time.sleep(4);
 
@@ -162,4 +162,3 @@ if __name__ == '__main__':
         p1.stop()
         p2.stop()
         GPIO.cleanup();
-        
