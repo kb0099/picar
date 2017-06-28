@@ -41,8 +41,8 @@ def forward(speed):
     GPIO.output(GPIO_B2, False)
 
     #for ii in range (20):
-    p1.ChangeDutyCycle(40) 		# left
-    p2.ChangeDutyCycle(90)		# right
+    p1.ChangeDutyCycle(100) 		# left
+    p2.ChangeDutyCycle(100)		# right
     
 
     #servo.set_servo(GPIO_A1, speed)
