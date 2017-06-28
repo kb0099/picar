@@ -156,12 +156,7 @@ if __name__ == '__main__':
         p1.stop();
         p2.stop();
         GPIO.cleanup();
-	
-    	GPIO.output(GPIO_A1, False)
-    	GPIO.output(GPIO_A2, False)
-    	GPIO.output(GPIO_B1, False)
-    	GPIO.output(GPIO_B2, False) 
-    
+	    
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
