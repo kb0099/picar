@@ -28,8 +28,8 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-p1 = GPIO.PWM(2, 100)
-p2 = GPIO.PWM(14, 100)
+p1 = GPIO.PWM(GPIO_A1, 1000)
+p2 = GPIO.PWM(GPIO_B1, 1000)
 p1.start(0);
 p2.start(0);
 
@@ -41,8 +41,8 @@ def forward(speed):
     GPIO.output(GPIO_B2, False)
 
     #for ii in range (20):
-    p1.ChangeDutyCycle(speed)
-    p2.ChangeDutyCycle(speed)
+    p1.ChangeDutyCycle(40) 		# left
+    p2.ChangeDutyCycle(90)		# right
     
 
     #servo.set_servo(GPIO_A1, speed)
@@ -108,7 +108,10 @@ def distance():
     return distance
  
 if __name__ == '__main__':
-    try:
+    # call the forward method
+    
+    if False:
+    #try:
         # while True:
         # dist = distance()
         # print ("Measured Distance = %.1f cm" % dist)
@@ -133,6 +136,7 @@ if __name__ == '__main__':
 	# End
         p1.stop()
         p2.stop()
+
 	GPIO.cleanup()
 
 
@@ -143,8 +147,26 @@ if __name__ == '__main__':
             #    stop()
 		#break
             #time.sleep(0.1)
- 
-        # Reset by pressing CTRL + C
+    try:
+	time.sleep(3);
+        forward(75);
+        time.sleep(4);
+        
+        stop();
+        p1.stop();
+        p2.stop();
+        GPIO.cleanup();
+	
+    	GPIO.output(GPIO_A1, False)
+    	GPIO.output(GPIO_A2, False)
+    	GPIO.output(GPIO_B1, False)
+    	GPIO.output(GPIO_B2, False) 
+    
+    # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
-       
+        stop()
+	p1.stop()
+	p2.stop()
+	GPIO.cleanup();
+
