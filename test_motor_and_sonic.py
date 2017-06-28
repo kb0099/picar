@@ -118,28 +118,26 @@ if __name__ == '__main__':
         print "speed 1"
         forward(30)
         time.sleep(10)
-	p1.ChangeDutyCycle(0)
+        p1.ChangeDutyCycle(0)
         p2.ChangeDutyCycle(0)
-	time.sleep(2)
+        time.sleep(2)
 
         print "speed 2"
         forward(50)
         time.sleep(3)	
         p1.ChangeDutyCycle(0)
         p2.ChangeDutyCycle(0)
-	time.sleep(2)
+        time.sleep(2)
 
-	print "speed 3"
+        print "speed 3"
         forward(100)
-	time.sleep(3)
+        time.sleep(3)
 
-	# End
+        # End
         p1.stop()
         p2.stop()
 
-	GPIO.cleanup()
-
-
+        GPIO.cleanup()
             # if-else to set forward or stop
             #if dist > 25:
             #    forward()
@@ -148,10 +146,10 @@ if __name__ == '__main__':
 		#break
             #time.sleep(0.1)
     try:
-	time.sleep(3);
+        time.sleep(3);
         forward(75);
         time.sleep(4);
-        
+
         stop();
         p1.stop();
         p2.stop();
@@ -161,7 +159,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         stop()
-	p1.stop()
-	p2.stop()
-	GPIO.cleanup();
-
+        p1.stop()
+        p2.stop()
+        GPIO.cleanup();
+        
