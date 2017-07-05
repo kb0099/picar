@@ -32,10 +32,10 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-#p1 = GPIO.PWM(GPIO_A1, 1000)
-#p2 = GPIO.PWM(GPIO_B1, 1000)
-#p1.start(0);
-#p2.start(0);
+p1 = GPIO.PWM(GPIO_A3, 1000)
+p2 = GPIO.PWM(GPIO_B3, 1000)
+p1.start(100);
+p2.start(50);
 
 def forward(speed):
     # set Trigger to HIGH
@@ -43,8 +43,8 @@ def forward(speed):
     GPIO.output(GPIO_A2, False)
     GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
-    GPIO.output(GPIO_A3, True)
-    GPIO.output(GPIO_B3, True)
+    #GPIO.output(GPIO_A3, True)
+    #GPIO.output(GPIO_B3, True)
 
     #for ii in range (20):
     #p1.ChangeDutyCycle(40) 		# left
@@ -157,8 +157,8 @@ if __name__ == '__main__':
         time.sleep(4);
         
         stop();
-        #p1.stop();
-        #p2.stop();
+        p1.stop();
+        p2.stop();
         GPIO.cleanup();
     
     # Reset by pressing CTRL + C
@@ -167,7 +167,7 @@ if __name__ == '__main__':
         stop()
 	    #p1.stop()
 	    #p2.stop()
-	#p1.stop()
-	#p2.stop()
+	p1.stop()
+	p2.stop()
 	GPIO.cleanup();
 
