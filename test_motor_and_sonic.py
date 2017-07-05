@@ -31,7 +31,7 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 p1 = GPIO.PWM(GPIO_A1, 100)
 p2 = GPIO.PWM(GPIO_B1, 100)
 p1.start(100);
-p2.start(30);
+p2.start(100);
 
 def forward(speed):
     # set Trigger to HIGH
