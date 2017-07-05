@@ -165,12 +165,9 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         stop()
-<<<<<<< HEAD
 	    #p1.stop()
 	    #p2.stop()
-=======
 	#p1.stop()
 	#p2.stop()
->>>>>>> 08acf059d99989db26ea5698c2c9047599cefe86
 	GPIO.cleanup();
 
