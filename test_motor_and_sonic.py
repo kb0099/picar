@@ -159,8 +159,8 @@ if __name__ == '__main__':
         time.sleep(4);
         
         stop();
-        p1.stop();
-        p2.stop();
+        #p1.stop();
+        #p2.stop();
         GPIO.cleanup();
 	
     	GPIO.output(GPIO_A1, False)
@@ -172,7 +172,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         stop()
-	p1.stop()
-	p2.stop()
+	#p1.stop()
+	#p2.stop()
 	GPIO.cleanup();
 
