@@ -11,6 +11,8 @@ GPIO_A1 = 2
 GPIO_A2 = 3
 GPIO_B1 = 14
 GPIO_B2 = 15
+GPIO_A3 = 4
+GPIO_B3 = 18
 
 GPIO_TRIGGER = 18
 GPIO_ECHO = 24
@@ -22,27 +24,31 @@ GPIO.setup(GPIO_A1, GPIO.OUT)
 GPIO.setup(GPIO_A2, GPIO.OUT)
 GPIO.setup(GPIO_B1, GPIO.OUT)
 GPIO.setup(GPIO_B2, GPIO.OUT)
+GPIO.setup(GPIO_A3, GPIO.OUT)
+GPIO.setup(GPIO_B3, GPIO.OUT)
 
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT) #c
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-p1 = GPIO.PWM(GPIO_A1, 1000)
-p2 = GPIO.PWM(GPIO_B1, 1000)
-p1.start(0);
-p2.start(0);
+#p1 = GPIO.PWM(GPIO_A1, 1000)
+#p2 = GPIO.PWM(GPIO_B1, 1000)
+#p1.start(0);
+#p2.start(0);
 
 def forward(speed):
     # set Trigger to HIGH
-    #GPIO.output(GPIO_A1, True)
+    GPIO.output(GPIO_A1, True)
     GPIO.output(GPIO_A2, False)
-    #GPIO.output(GPIO_B1, True)
+    GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
+    GPIO.output(GPIO_A3, True)
+    GPIO.output(GPIO_B3, False)
 
     #for ii in range (20):
-    p1.ChangeDutyCycle(40) 		# left
-    p2.ChangeDutyCycle(90)		# right
+    #p1.ChangeDutyCycle(40) 		# left
+    #p2.ChangeDutyCycle(90)		# right
     
 
     #servo.set_servo(GPIO_A1, speed)
@@ -148,7 +154,7 @@ if __name__ == '__main__':
 		#break
             #time.sleep(0.1)
     try:
-	time.sleep(3);
+	    #time.sleep(3);
         forward(75);
         time.sleep(4);
         
