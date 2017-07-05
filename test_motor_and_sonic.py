@@ -44,7 +44,7 @@ def forward(speed):
     GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
     GPIO.output(GPIO_A3, True)
-    GPIO.output(GPIO_B3, False)
+    GPIO.output(GPIO_B3, True)
 
     #for ii in range (20):
     #p1.ChangeDutyCycle(40) 		# left
