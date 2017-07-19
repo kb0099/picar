@@ -34,8 +34,8 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 #Initial Pwm
 p1 = GPIO.PWM(GPIO_A3, 1000)
 p2 = GPIO.PWM(GPIO_B3, 1000)
-p1.start(100);
-p2.start(50);
+p1.start(44);
+p2.start(100);
 
 def forward(speed):
     # set Trigger to HIGH
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     try:
 	    #time.sleep(3);
         forward(75);
-        time.sleep(4);
+        time.sleep(10);
         
         stop();
         p1.stop();
