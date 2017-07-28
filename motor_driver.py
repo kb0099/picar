@@ -95,7 +95,7 @@ def backward_A(speed):
     __A_BP.ChangeDutyCycle(speed)
 
 def backward_B(speed):
-    """Drive motor A backward by setting A low and B high.
+    """Drive motor B backward by setting A low and B high.
 
     Args:
         speed (float): Duty cycle for motor PWM.
