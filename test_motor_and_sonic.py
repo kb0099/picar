@@ -64,7 +64,7 @@ def reverse():
 	p2.ChangeDutyCycle(80)
 	return
 
-def right():
+def slow_right():
 	GPIO.output(GPIO_A1, True)
 	GPIO.output(GPIO_A2, False)
 	GPIO.output(GPIO_B1, True)
@@ -73,9 +73,27 @@ def right():
 	p2.ChangeDutyCycle(60)
 	return
 
-def left():
+def fast_right():
 	GPIO.output(GPIO_A1, True)
 	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, False)
+	GPIO.output(GPIO_B2, True)
+	p1.ChangeDutyCycle(80)
+	p2.ChangeDutyCycle(60)
+	return
+
+def slow_left():
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+	p1.ChangeDutyCycle(60)
+	p2.ChangeDutyCycle(80)
+	return
+
+def fast_left():
+	GPIO.output(GPIO_A1, False)
+	GPIO.output(GPIO_A2, True)
 	GPIO.output(GPIO_B1, True)
 	GPIO.output(GPIO_B2, False)
 	p1.ChangeDutyCycle(60)
@@ -125,15 +143,25 @@ if __name__ == '__main__':
 				reverse()
 				time.sleep(3)
 				if dir == 0:
-					left()
+					slow_left()
 					time.sleep(2)
 					dir = 1
 					forward()
-				else:
-					right()
+				elif dir == 1:
+					slow_right()
 					time.sleep(2)
+					dir = 2
+					forward()
+				elif dir == 2:
+					fast_left()
+					time.sleep(1)
+					dir = 3
+					forward()
+				else:
+					fast_right()
+					time.sleep(1)
 					dir = 0
-					forward()        
+					forward()       
 		#stop();
 		#p1.stop();
 		#p2.stop();
