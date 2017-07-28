@@ -34,7 +34,7 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 #Initial Pwm
 p1 = GPIO.PWM(GPIO_A3, 1000)
 p2 = GPIO.PWM(GPIO_B3, 1000)
-p1.start(44);
+p1.start(100);
 p2.start(100);
 
 def forward(speed):
@@ -47,8 +47,8 @@ def forward(speed):
     #GPIO.output(GPIO_B3, True)
 
     #for ii in range (20):
-    #p1.ChangeDutyCycle(40) 		# left
-    #p2.ChangeDutyCycle(90)		# right
+    p1.ChangeDutyCycle(80)
+    p2.ChangeDutyCycle(80)
     
 
     #servo.set_servo(GPIO_A1, speed)
@@ -56,34 +56,35 @@ def forward(speed):
     return
 
 def reverse():
-    # set Trigger to HIGH
     GPIO.output(GPIO_A1, False)
     GPIO.output(GPIO_A2, True)
     GPIO.output(GPIO_B1, False)
     GPIO.output(GPIO_B2, True)
+    p1.ChangeDutyCycle(80)
+    p2.ChangeDutyCycle(80)
     return
 
 def right():
-    # set Trigger to HIGH
     GPIO.output(GPIO_A1, True)
     GPIO.output(GPIO_A2, False)
-    GPIO.output(GPIO_B1, False)
-    GPIO.output(GPIO_B2, True)
+    GPIO.output(GPIO_B1, True)
+    GPIO.output(GPIO_B2, False)
+    p1.ChangeDutyCycle(80)
+    p2.ChangeDutyCycle(60)
     return
 
 def left():
-    # set Trigger to HIGH
-    GPIO.output(GPIO_A1, False)
-    GPIO.output(GPIO_A2, True)
+    GPIO.output(GPIO_A1, True)
+    GPIO.output(GPIO_A2, False)
     GPIO.output(GPIO_B1, True)
     GPIO.output(GPIO_B2, False)
+    p1.ChangeDutyCycle(60)
+    p2.ChangeDutyCycle(80)
     return
 
 def stop():
-    GPIO.output(GPIO_A1, False)
-    GPIO.output(GPIO_A2, False)
-    GPIO.output(GPIO_B1, False)
-    GPIO.output(GPIO_B2, False)
+    p1.ChangeDutyCycle(0)
+    p2.ChangeDutyCycle(0)
     return
 
 def distance():
@@ -115,58 +116,33 @@ def distance():
  
 if __name__ == '__main__':
     # call the forward method
-    
-    if False:
-    #try:
-        # while True:
-        # dist = distance()
-        # print ("Measured Distance = %.1f cm" % dist)
-        print "speed 1"
-        forward(30)
-        time.sleep(10)
-        p1.ChangeDutyCycle(0)
-        p2.ChangeDutyCycle(0)
-        time.sleep(2)
-
-        print "speed 2"
-        forward(50)
-        time.sleep(3)	
-        p1.ChangeDutyCycle(0)
-        p2.ChangeDutyCycle(0)
-        time.sleep(2)
-
-        print "speed 3"
-        forward(100)
-        time.sleep(3)
-
-        # End
-        p1.stop()
-        p2.stop()
-        GPIO.cleanup()
-
-            # if-else to set forward or stop
-            #if dist > 25:
-            #    forward()
-            #else:
-            #    stop()
-		#break
-            #time.sleep(0.1)
     try:
-	    #time.sleep(3);
-        forward(75);
-        time.sleep(10);
-        
-        stop();
-        p1.stop();
-        p2.stop();
-        GPIO.cleanup();
+        forward()
+        dir = 0
+	    while True:
+            sens = distance()
+            if sens < 30:
+                reverse()
+                time.sleep(3)
+                if dir == 0:
+                    left()
+                    time.sleep(2)
+                    dir = 1
+                    forward()
+                else:
+                    right()
+                    time.sleep(2)
+                    dir = 0
+                    forward()        
+        #stop();
+        #p1.stop();
+        #p2.stop();
+        #GPIO.cleanup();
     
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         stop()
-	    #p1.stop()
-	    #p2.stop()
 	p1.stop()
 	p2.stop()
 	GPIO.cleanup();
