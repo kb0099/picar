@@ -136,6 +136,7 @@ if __name__ == '__main__':
 	# call the forward method
 	try:
 		forward()
+		time.sleep(10)
 		dir = 0
 		while True:
 			sens = distance()
