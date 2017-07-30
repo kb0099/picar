@@ -12,7 +12,3 @@ def SendIP():
     import datetime;
 
     SendEmail(userName, password, recipients, appName +  ": " + datetime.datetime.now().isoformat(), gethostbyname(getfqdn()));
-
-SendIP();
-
-# Starting Server
