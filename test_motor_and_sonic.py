@@ -28,10 +28,10 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-p1 = GPIO.PWM(GPIO_A1, 1000)
-p2 = GPIO.PWM(GPIO_B1, 1000)
-p1.start(0);
-p2.start(0);
+p1 = GPIO.PWM(GPIO_A1, 100)
+p2 = GPIO.PWM(GPIO_B1, 100)
+p1.start(100);
+p2.start(100);
 
 def forward(speed):
     # set Trigger to HIGH
@@ -41,8 +41,8 @@ def forward(speed):
     GPIO.output(GPIO_B2, False)
 
     #for ii in range (20):
-    p1.ChangeDutyCycle(40) 		# left
-    p2.ChangeDutyCycle(90)		# right
+    p1.ChangeDutyCycle(100) 		# left
+    #p2.ChangeDutyCycle(100)		# right
     
 
     #servo.set_servo(GPIO_A1, speed)
@@ -118,28 +118,26 @@ if __name__ == '__main__':
         print "speed 1"
         forward(30)
         time.sleep(10)
-	p1.ChangeDutyCycle(0)
+        p1.ChangeDutyCycle(0)
         p2.ChangeDutyCycle(0)
-	time.sleep(2)
+        time.sleep(2)
 
         print "speed 2"
         forward(50)
         time.sleep(3)	
         p1.ChangeDutyCycle(0)
         p2.ChangeDutyCycle(0)
-	time.sleep(2)
+        time.sleep(2)
 
-	print "speed 3"
+        print "speed 3"
         forward(100)
-	time.sleep(3)
+        time.sleep(3)
 
-	# End
+        # End
         p1.stop()
         p2.stop()
 
-	GPIO.cleanup()
-
-
+        GPIO.cleanup()
             # if-else to set forward or stop
             #if dist > 25:
             #    forward()
@@ -148,25 +146,19 @@ if __name__ == '__main__':
 		#break
             #time.sleep(0.1)
     try:
-	time.sleep(3);
-        forward(75);
-        time.sleep(4);
-        
+        #time.sleep(3);
+        #forward(75);
+        time.sleep(10);
+
         stop();
         p1.stop();
         p2.stop();
         GPIO.cleanup();
-	
-    	GPIO.output(GPIO_A1, False)
-    	GPIO.output(GPIO_A2, False)
-    	GPIO.output(GPIO_B1, False)
-    	GPIO.output(GPIO_B2, False) 
-    
+	    
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         stop()
-	p1.stop()
-	p2.stop()
-	GPIO.cleanup();
-
+        p1.stop()
+        p2.stop()
+        GPIO.cleanup();
