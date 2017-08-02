@@ -2,6 +2,8 @@
 import numpy
 import cv2
 import time
+import datetime
+
 print cv2.__version__
 print numpy.__version__
 print numpy.__path__
@@ -26,8 +28,8 @@ def get_image():
 try:
 	while 1:
 		# Read image from camera or file
-		img = cv2.imread('cam2.jpg', 1)
-		#img = get_image()
+		#img = cv2.imread('cam2.jpg', 1)
+		img = get_image()
 
 		# Get the rows, cloumns, and channel values from the image
 		rows,columns,channels = img.shape
@@ -126,7 +128,7 @@ try:
 		time.sleep(2)
 
 		# Write thresholded image to file
-		cv2.imwrite('threshold.jpg', thresh)
+		cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + ".jpg", thresh)
 except KeyboardInterrupt:
 	# Delete/Release Camera
 	del(camera)
