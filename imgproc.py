@@ -44,7 +44,7 @@ try:
 
 		# Process image using Binary Thresholding
 		if white_on_dark:
-			ret,thresh = cv2.threshold(bw, 220, 255, cv2.THRESH_BINARY)
+			ret,thresh = cv2.threshold(bw, 235, 255, cv2.THRESH_BINARY)
 		else:
 			ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
 
