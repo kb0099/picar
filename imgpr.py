@@ -129,6 +129,7 @@ try:
 
 		# Write thresholded image to file
 		cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + ".jpg", thresh)
+		cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + "raw.jpg", img)
 except KeyboardInterrupt:
 	# Delete/Release Camera
 	del(camera)
