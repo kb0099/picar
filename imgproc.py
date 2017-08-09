@@ -3,10 +3,43 @@ import numpy
 import cv2
 import time
 import datetime
+#Libraries
+import RPi.GPIO as GPIO
 
-print cv2.__version__
-print numpy.__version__
-print numpy.__path__
+#GPIO Mode (BOARD / BCM)
+GPIO.setmode(GPIO.BCM)
+ 
+#set GPIO Pins
+GPIO_A1 = 2
+GPIO_A2 = 3
+GPIO_B1 = 14
+GPIO_B2 = 15
+GPIO_A3 = 4
+GPIO_B3 = 18
+
+GPIO_TRIGGER = 23
+GPIO_ECHO = 24
+ 
+#set GPIO direction (IN / OUT)
+GPIO.setup(GPIO_A1, GPIO.OUT)
+GPIO.setup(GPIO_A2, GPIO.OUT)
+GPIO.setup(GPIO_B1, GPIO.OUT)
+GPIO.setup(GPIO_B2, GPIO.OUT)
+GPIO.setup(GPIO_A3, GPIO.OUT)
+GPIO.setup(GPIO_B3, GPIO.OUT)
+
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+GPIO.setup(GPIO_ECHO, GPIO.IN)
+
+
+#Initial Pwm
+p1 = GPIO.PWM(GPIO_A3, 1000)
+p2 = GPIO.PWM(GPIO_B3, 1000)
+p1.start(100);
+p2.start(100);
+
+# Default PWM Duty Cycle Value
+default_cycle = 80
 
 # Lines 10-24 from source: https://codeplasma.com/2012/12/03/getting-webcam-images-with-python-and-opencv-2-for-real-this-time/
 # Camera 0 is the integrated web cam on my netbook
@@ -21,9 +54,123 @@ camera = cv2.VideoCapture(camera_port)
 
 # Captures a single image from the camera and returns it in PIL format
 def get_image():
- # read is the easiest way to get a full image out of a VideoCapture object.
- retval, im = camera.read()
- return im
+	'''
+	Gets an image from the provided camera port for use in image processing.
+	'''
+ 	# read is the easiest way to get a full image out of a VideoCapture object.
+	retval, im = camera.read()
+	return im
+
+def forward(left, right):
+	'''
+	Gives the vehicle the instruction to move forward with the left and right arguments providing the desired duty cycle for each wheel.
+	Providing differing values such as 70 and 100 will cause the vehicle to turn in the opposite direction of the higher valued argument.
+	(0-100)
+	'''
+	if left > 100 or right > 100 or left < 0 or right < 0:
+		Print('Invalid Forward Argument(s), must be between 0 and 100.')
+		return
+	# Set both wheels to forward motion.
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+
+	# Change Duty Cycle to desired values.
+	p1.ChangeDutyCycle(left)
+	p2.ChangeDutyCycle(right)
+	return
+
+def reverse(left, right):
+	'''
+	Gives the vehicle the instruction to move backwards with the left and right arguments providing the desired duty cycle for each wheel.
+	Providing differing values such as 70 and 100 will cause the vehicle to turn in the opposite direction of the higher valued argument.
+	(0-100)
+	'''
+	# Set both wheels to reverse motion
+	GPIO.output(GPIO_A1, False)
+	GPIO.output(GPIO_A2, True)
+	GPIO.output(GPIO_B1, False)
+	GPIO.output(GPIO_B2, True)
+
+	# Change Duty cycle to desired value
+	p1.ChangeDutyCycle(left)
+	p2.ChangeDutyCycle(right)
+	return
+
+def right():
+	'''
+	Gives the vehicle the instruction to turn to the right.
+	This function allows for a much faster turning speed than the forward function as the wheels are turning in opposite directions.
+	Useful for quick turning adjustments.
+	'''
+	# Set left wheel to forward and right wheel to reverse.
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, False)
+	GPIO.output(GPIO_B2, True)
+
+	# Set the duty cycle for each wheel to the same default value.
+	p1.ChangeDutyCycle(default_cycle)
+	p2.ChangeDutyCycle(default_cycle)
+	return
+
+def left():
+	'''
+	Gives the vehicle the instruction to turn to the left.
+	This function allows for a much faster turning speed than the forward function as the wheels are turning in opposite directions.
+	Useful for quick turning adjustments.
+	'''
+	# Set left wheel to reverse and right wheel to forward.
+	GPIO.output(GPIO_A1, False)
+	GPIO.output(GPIO_A2, True)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+
+	# Set the duty cycle for each wheel to the same default value.
+	p1.ChangeDutyCycle(default_cycle)
+	p2.ChangeDutyCycle(default_cycle)
+	return
+
+def stop():
+	'''
+	Gives the vehicle the instruction to stop all movement.
+	'''
+	# Set the duty cycle for each wheel to 0.
+	p1.ChangeDutyCycle(0)
+	p2.ChangeDutyCycle(0)
+	return
+
+def distance():
+	'''
+	Utilizes an ultrasonic sensor to determine the distance (in cm) to the nearest detected object.
+	Returns the distance in centimeters.
+	'''
+	# set Trigger to HIGH
+	GPIO.output(GPIO_TRIGGER, True)
+ 
+	# set Trigger after 0.01ms to LOW
+	time.sleep(0.00001)
+	GPIO.output(GPIO_TRIGGER, False)
+ 
+	StartTime = time.time()
+	StopTime = time.time()
+ 
+	# save StartTime
+	while GPIO.input(GPIO_ECHO) == 0:
+		StartTime = time.time()
+ 
+	# save time of arrival
+	while GPIO.input(GPIO_ECHO) == 1:
+		StopTime = time.time()
+ 
+	# time difference between start and arrival
+	TimeElapsed = StopTime - StartTime
+	# multiply with the sonic speed (34300 cm/s)
+	# and divide by 2, because there and back
+	distance = (TimeElapsed * 34300) / 2
+ 
+	return distance
 
 try:
 	while 1:
