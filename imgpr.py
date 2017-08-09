@@ -62,7 +62,7 @@ try:
 		start2_high = 0
 		end1_high = 0
 		end2_high = 0
-		low = 300
+		low = 250
 		high = 160
 
 		# Detect potential lane markings at the 'low' pixel row value
