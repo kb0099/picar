@@ -254,6 +254,7 @@ try:
 			elif(thresh.item(low, i) is 0 and prog is 3):
 				end2_low = i
 				prog = 4
+			thresh.itemset((low, i), 155)
 		prog = 0
 
 		# Detect potential lane markings at the 'high' pixel row value
@@ -272,6 +273,7 @@ try:
 			elif(thresh.item(high, j) is 0 and prog is 3):
 				end2_high = j
 				prog = 4
+			thresh.itemset((high, j), 155)
 
 		# Condense the two-point lane detection to a single point at the midpoint of the lane
 		if start1_low != 0 and end1_low != 0:
