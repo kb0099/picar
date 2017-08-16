@@ -332,11 +332,11 @@ try:
 			midpoint = (low_1 + low_2) / 2
 			if midpoint >= columns / 2:
 				# Turn Right
-				speed_right -= 5
-				speed_left += 5
+				speed_right -= 2
+				speed_left += 2
 			elif midpoint < columns / 2:
-				speed_right += 5
-				speed_left -= 5
+				speed_right += 2
+				speed_left -= 2
 			else:# high_1 > low_1 and high_2 < low_2:
 				speed_left = default_cycle
 				speed_right = default_cycle
