@@ -341,7 +341,7 @@ try:
 		time.sleep(.2)
 
 		# Write thresholded image to file
-		#cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + ".jpg", thresh)
+		cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + "TEST.jpg", thresh)
 except KeyboardInterrupt:
 	# Delete/Release Camera
 	del(camera)
