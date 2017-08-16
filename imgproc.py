@@ -204,7 +204,7 @@ try:
 		#img = cv2.imread('cam2.jpg', 1)
 		img = get_image()
 
-		# Get the rows, cloumns, and channel values from the image
+		# Get the rows, columns, and channel values from the image
 		rows,columns,channels = img.shape
 		print('Rows: {0} Columns: {1} Channels: {2}'.format(rows, columns, channels))
 
@@ -329,13 +329,21 @@ try:
 		elif high_1 != 0 and high_2 != 0 and low_1 != 0 and low_2 != 0:
 			# Default forward state
 			print("looking good!")
-			if high_1 > low_1 and high_2 < low_2:
+			midpoint = (low_1 + low_2) / 2
+			if midpoint >= columns / 2:
+				# Turn Right
+				speed_right -= 5
+				speed_left += 5
+			elif midpoint < columns / 2:
+				speed_right += 5
+				speed_left -= 5
+			else:# high_1 > low_1 and high_2 < low_2:
 				speed_left = default_cycle
 				speed_right = default_cycle
 				forward(speed_left, speed_right)
-			# Start Spinning cuz why not (unexpected behavior)
-			else:
-				right()
+			speed_left = checkCycle(speed_left)
+			speed_right = checkCycle(speed_right)
+			forward(speed_left, speed_right)
 
 
 
