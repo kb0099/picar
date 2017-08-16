@@ -43,8 +43,8 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 #Initial Pwm
 p1 = GPIO.PWM(GPIO_A3, 1000)
 p2 = GPIO.PWM(GPIO_B3, 1000)
-p1.start(100);
-p2.start(100);
+p1.start(0);
+p2.start(0);
 print("PWM")
 # Default PWM Duty Cycle Value and Threshold
 default_cycle = 80
