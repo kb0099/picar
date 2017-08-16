@@ -45,7 +45,7 @@ p1 = GPIO.PWM(GPIO_A3, 1000)
 p2 = GPIO.PWM(GPIO_B3, 1000)
 p1.start(100);
 p2.start(100);
-
+print("PWM")
 # Default PWM Duty Cycle Value and Threshold
 default_cycle = 80
 cycle_limit_high = 100
@@ -64,6 +64,7 @@ ramp_frames = 30
 # Now we can initialize the camera capture object with the cv2.VideoCapture class.
 # All it needs is the index to a camera port.
 camera = cv2.VideoCapture(camera_port)
+print("CAMERA")
 
 # Captures a single image from the camera and returns it in PIL format
 def get_image():
@@ -198,12 +199,14 @@ def checkCycle(cycle):
 
 try:
 	# Variables tracking wheel speed
+	print("EARLY TRY")
 	speed_left = default_cycle
 	speed_right = default_cycle
 	while 1:
 		# Read image from camera or file
 		#img = cv2.imread('cam2.jpg', 1)
 		img = get_image()
+		print("GET IMAGE")
 
 		# Get the rows, cloumns, and channel values from the image
 		rows,columns,channels = img.shape
@@ -221,11 +224,12 @@ try:
 			ret,thresh = cv2.threshold(bw, 235, 255, cv2.THRESH_BINARY)
 		else:
 			ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
+		print("IMG THRESHOLDED")
 
 		# Line for adaptive thresholding if needed...
 		#adapt = cv2.adaptiveThreshold(bw,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,221,1)
 
-		print thresh.shape
+		#print thresh.shape
 		# Initial values
 		prog = 0
 		start1_low = 0
@@ -273,6 +277,7 @@ try:
 			elif(thresh.item(high, j) is 0 and prog is 3):
 				end2_high = j
 				prog = 4
+		print("LANES PULLED")
 
 		# Condense the two-point lane detection to a single point at the midpoint of the lane
 		if start1_low != 0 and end1_low != 0:
@@ -291,6 +296,7 @@ try:
 			high_2 = (start2_high + end2_high) / 2
 		else:
 			high_2 = 0
+		print("LANES TO POINTS")
 		#print('Low: {0} to {1} and {2} to {3}'.format(start1_low, end1_low, start2_low, end2_low))
 		#print('High: {0} to {1} and {2} to {3}'.format(start1_high, end1_high, start2_high, end2_high))
 
@@ -299,6 +305,7 @@ try:
 		print('Lanes detected in lower region at {0} and {1}'.format(low_1, low_2))
 
 		sensor_distance = distance()
+		print("DISTANCE")
 
 		# Determine how to control the car based on the image.
 		# if obstruction is detected, stop
