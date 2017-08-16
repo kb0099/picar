@@ -330,17 +330,16 @@ try:
 			# Default forward state
 			print("looking good!")
 			midpoint = (low_1 + low_2) / 2
-			if midpoint >= columns / 2:
+			if midpoint >= (columns / 2) + 100:
 				# Turn Right
-				speed_right -= 2
-				speed_left += 2
-			elif midpoint < columns / 2:
-				speed_right += 2
-				speed_left -= 2
+				speed_right -= 5
+				speed_left += 5
+			elif midpoint < (columns / 2) - 100:
+				speed_right += 5
+				speed_left -= 5
 			else:# high_1 > low_1 and high_2 < low_2:
 				speed_left = default_cycle
 				speed_right = default_cycle
-				forward(speed_left, speed_right)
 			speed_left = checkCycle(speed_left)
 			speed_right = checkCycle(speed_right)
 			forward(speed_left, speed_right)
