@@ -38,8 +38,10 @@ p2 = GPIO.PWM(GPIO_B3, 1000)
 p1.start(100);
 p2.start(100);
 
-# Default PWM Duty Cycle Value
+# Default PWM Duty Cycle Value and Threshold
 default_cycle = 80
+cycle_limit_high = 100
+cycle_limit_low = 60
 
 # Lines 10-24 from source: https://codeplasma.com/2012/12/03/getting-webcam-images-with-python-and-opencv-2-for-real-this-time/
 # Camera 0 is the integrated web cam on my netbook
@@ -171,8 +173,22 @@ def distance():
 	distance = (TimeElapsed * 34300) / 2
  
 	return distance
+def checkCycle(cycle):
+	'''
+	Ensures the provided duty cycle value falls within the acceptable range.
+	'''
+	if cycle > cycle_limit_high:
+		adj_cycle = cycle_limit_high
+	elif cycle < cycle_limit_low:
+		adj_cycle = cycle_limit_low
+	else:
+		adj_cycle = cycle
+	return adj_cycle
 
 try:
+	# Variables tracking wheel speed
+	speed_left = default_cycle
+	speed_right = default_cycle
 	while 1:
 		# Read image from camera or file
 		#img = cv2.imread('cam2.jpg', 1)
@@ -270,6 +286,36 @@ try:
 		# Print location of detected lanes
 		print('Lanes detected in upper region at {0} and {1}'.format(high_1, high_2))
 		print('Lanes detected in lower region at {0} and {1}'.format(low_1, low_2))
+
+		# Determine how to control the car based on the image.
+		# If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
+		if high_2 == 0 or low_2 == 0:
+			if high_1 != 0 and low_1 != 0:
+				if high_1 > low_1:
+					# Turn Right
+					speed_right += 5
+					speed_left -= 5
+				elif low_1 > high_1:
+					# Turn Left
+					speed_right -= 5
+					speed_left += 5
+			# Check that cycles are valid
+			speed_left = checkCycle(speed_left)
+			speed_right = checkCycle(speed_right)
+			forward(speed_left, speed_right)
+		# Case where lanes are detected on both lines.
+		elif high_1 != 0 and high_2 != 0 and low_1 != 0 and low_2 != 0:
+			# Default forward state
+			if high_1 > low_1 and high_2 < low_2:
+				speed_left = default_cycle
+				speed_right = default_cycle
+				forward(speed_left, speed_right)
+			# Start Spinning cuz why not (unexpected behavior)
+			else:
+				right()
+
+
+
 
 		# Wait 2 seconds
 		time.sleep(2)
