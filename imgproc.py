@@ -1,4 +1,12 @@
 #!python2
+import sys;
+# fix for numpy/cv2
+sys.path.append('/usr/lib/python2.7/lib-old');
+sys.path.append('/usr/lib/python2.7/lib-dynload');
+sys.path.append('/usr/local/lib/python2.7/dist-packages');
+sys.path.append('/usr/lib/python2.7/dist-packages');
+sys.path.append('/usr/lib/pymodules/python2.7');
+
 import numpy
 import cv2
 import time
