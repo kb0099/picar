@@ -314,13 +314,13 @@ try:
 				print("Need Turning!")
 				if high_1 > low_1:
 					# Turn Right
-					speed_right -= 5
-					speed_left += 5
+					speed_right -= 10
+					speed_left += 10
 				elif low_1 > high_1:
 					# Turn Left
 					print("LEFT")
-					speed_right += 5
-					speed_left -= 5
+					speed_right += 10
+					speed_left -= 10
 			# Check that cycles are valid
 			speed_left = checkCycle(speed_left)
 			speed_right = checkCycle(speed_right)
