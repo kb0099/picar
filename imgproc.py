@@ -51,6 +51,9 @@ default_cycle = 80
 cycle_limit_high = 100
 cycle_limit_low = 60
 
+# Distance at which to react to obstructions
+safe_distance = 15
+
 # Lines 10-24 from source: https://codeplasma.com/2012/12/03/getting-webcam-images-with-python-and-opencv-2-for-real-this-time/
 # Camera 0 is the integrated web cam on my netbook
 camera_port = 0
@@ -295,7 +298,13 @@ try:
 		print('Lanes detected in upper region at {0} and {1}'.format(high_1, high_2))
 		print('Lanes detected in lower region at {0} and {1}'.format(low_1, low_2))
 
+		sensor_distance = distance()
+
 		# Determine how to control the car based on the image.
+		# if obstruction is detected, stop
+		if distance < safe_distance:
+			stop()
+
 		# If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
 		if high_2 == 0 or low_2 == 0:
 			if high_1 != 0 and low_1 != 0:
