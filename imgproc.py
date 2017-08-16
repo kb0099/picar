@@ -343,9 +343,9 @@ try:
 		# Write thresholded image to file
 		cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + "TEST.jpg", thresh)
 except KeyboardInterrupt:
-	# Delete/Release Camera
-	del(camera)
 	stop()
 	p1.stop()
 	p2.stop()
-	GPIO.cleanup();
+	GPIO.cleanup()
+	# Delete/Release Camera
+	del(camera)
