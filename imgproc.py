@@ -303,11 +303,13 @@ try:
 		# Determine how to control the car based on the image.
 		# if obstruction is detected, stop
 		if distance < safe_distance:
+			print("stop!!")
 			stop()
 
 		# If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
 		if high_2 == 0 or low_2 == 0:
 			if high_1 != 0 and low_1 != 0:
+				print("Need Turning!")
 				if high_1 > low_1:
 					# Turn Right
 					speed_right += 5
@@ -323,6 +325,7 @@ try:
 		# Case where lanes are detected on both lines.
 		elif high_1 != 0 and high_2 != 0 and low_1 != 0 and low_2 != 0:
 			# Default forward state
+			print("looking good!")
 			if high_1 > low_1 and high_2 < low_2:
 				speed_left = default_cycle
 				speed_right = default_cycle
@@ -335,7 +338,7 @@ try:
 
 
 		# Wait 2 seconds
-		time.sleep(.5)
+		time.sleep(.2)
 
 		# Write thresholded image to file
 		#cv2.imwrite('../../data/imgs/' + datetime.datetime.now().isoformat() + ".jpg", thresh)
