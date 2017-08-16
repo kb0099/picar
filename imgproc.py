@@ -329,12 +329,12 @@ try:
 		elif high_1 != 0 and high_2 != 0 and low_1 != 0 and low_2 != 0:
 			# Default forward state
 			print("looking good!")
-			midpoint = (low_1 + low_2) / 2
-			if midpoint >= (columns / 2) + 100:
+			midpoint = (high_1 + high_2) / 2
+			if midpoint >= (columns / 2) + 50:
 				# Turn Right
 				speed_right -= 5
 				speed_left += 5
-			elif midpoint < (columns / 2) - 100:
+			elif midpoint < (columns / 2) - 50:
 				speed_right += 5
 				speed_left -= 5
 			else:# high_1 > low_1 and high_2 < low_2:
