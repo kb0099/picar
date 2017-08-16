@@ -345,6 +345,7 @@ try:
 except KeyboardInterrupt:
 	# Delete/Release Camera
 	del(camera)
+	stop()
 	p1.stop()
 	p2.stop()
 	GPIO.cleanup();
