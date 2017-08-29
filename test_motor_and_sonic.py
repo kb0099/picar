@@ -11,8 +11,10 @@ GPIO_A1 = 2
 GPIO_A2 = 3
 GPIO_B1 = 14
 GPIO_B2 = 15
+GPIO_A3 = 4
+GPIO_B3 = 18
 
-GPIO_TRIGGER = 18
+GPIO_TRIGGER = 23
 GPIO_ECHO = 24
 
 #servo = PWM.Servo()
@@ -22,150 +24,154 @@ GPIO.setup(GPIO_A1, GPIO.OUT)
 GPIO.setup(GPIO_A2, GPIO.OUT)
 GPIO.setup(GPIO_B1, GPIO.OUT)
 GPIO.setup(GPIO_B2, GPIO.OUT)
+GPIO.setup(GPIO_A3, GPIO.OUT)
+GPIO.setup(GPIO_B3, GPIO.OUT)
 
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT) #c
+GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-p1 = GPIO.PWM(GPIO_A1, 1000)
-p2 = GPIO.PWM(GPIO_B1, 1000)
-p1.start(0);
-p2.start(0);
+p1 = GPIO.PWM(GPIO_A3, 1000)
+p2 = GPIO.PWM(GPIO_B3, 1000)
+p1.start(100);
+p2.start(100);
 
-def forward(speed):
-    # set Trigger to HIGH
-    #GPIO.output(GPIO_A1, True)
-    GPIO.output(GPIO_A2, False)
-    #GPIO.output(GPIO_B1, True)
-    GPIO.output(GPIO_B2, False)
+def forward():
+	# set Trigger to HIGH
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+	#GPIO.output(GPIO_A3, True)
+	#GPIO.output(GPIO_B3, True)
 
-    #for ii in range (20):
-    p1.ChangeDutyCycle(40) 		# left
-    p2.ChangeDutyCycle(90)		# right
-    
+	#for ii in range (20):
+	p1.ChangeDutyCycle(80)
+	p2.ChangeDutyCycle(80)
+	
 
-    #servo.set_servo(GPIO_A1, speed)
-    #servo.set_servo(GPIO_B1, speed)
-    return
+	#servo.set_servo(GPIO_A1, speed)
+	#servo.set_servo(GPIO_B1, speed)
+	return
 
 def reverse():
-    # set Trigger to HIGH
-    GPIO.output(GPIO_A1, False)
-    GPIO.output(GPIO_A2, True)
-    GPIO.output(GPIO_B1, False)
-    GPIO.output(GPIO_B2, True)
-    return
+	GPIO.output(GPIO_A1, False)
+	GPIO.output(GPIO_A2, True)
+	GPIO.output(GPIO_B1, False)
+	GPIO.output(GPIO_B2, True)
+	p1.ChangeDutyCycle(80)
+	p2.ChangeDutyCycle(80)
+	return
 
-def right():
-    # set Trigger to HIGH
-    GPIO.output(GPIO_A1, True)
-    GPIO.output(GPIO_A2, False)
-    GPIO.output(GPIO_B1, False)
-    GPIO.output(GPIO_B2, True)
-    return
+def slow_right():
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+	p1.ChangeDutyCycle(80)
+	p2.ChangeDutyCycle(60)
+	return
 
-def left():
-    # set Trigger to HIGH
-    GPIO.output(GPIO_A1, False)
-    GPIO.output(GPIO_A2, True)
-    GPIO.output(GPIO_B1, True)
-    GPIO.output(GPIO_B2, False)
-    return
+def fast_right():
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, False)
+	GPIO.output(GPIO_B2, True)
+	p1.ChangeDutyCycle(80)
+	p2.ChangeDutyCycle(60)
+	return
+
+def slow_left():
+	GPIO.output(GPIO_A1, True)
+	GPIO.output(GPIO_A2, False)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+	p1.ChangeDutyCycle(60)
+	p2.ChangeDutyCycle(80)
+	return
+
+def fast_left():
+	GPIO.output(GPIO_A1, False)
+	GPIO.output(GPIO_A2, True)
+	GPIO.output(GPIO_B1, True)
+	GPIO.output(GPIO_B2, False)
+	p1.ChangeDutyCycle(60)
+	p2.ChangeDutyCycle(80)
+	return
 
 def stop():
-    GPIO.output(GPIO_A1, False)
-    GPIO.output(GPIO_A2, False)
-    GPIO.output(GPIO_B1, False)
-    GPIO.output(GPIO_B2, False)
-    return
+	p1.ChangeDutyCycle(0)
+	p2.ChangeDutyCycle(0)
+	return
 
 def distance():
-    # set Trigger to HIGH
-    GPIO.output(GPIO_TRIGGER, True)
+	# set Trigger to HIGH
+	GPIO.output(GPIO_TRIGGER, True)
  
-    # set Trigger after 0.01ms to LOW
-    time.sleep(0.00001)
-    GPIO.output(GPIO_TRIGGER, False)
+	# set Trigger after 0.01ms to LOW
+	time.sleep(0.00001)
+	GPIO.output(GPIO_TRIGGER, False)
  
-    StartTime = time.time()
-    StopTime = time.time()
+	StartTime = time.time()
+	StopTime = time.time()
  
-    # save StartTime
-    while GPIO.input(GPIO_ECHO) == 0:
-        StartTime = time.time()
+	# save StartTime
+	while GPIO.input(GPIO_ECHO) == 0:
+		StartTime = time.time()
  
-    # save time of arrival
-    while GPIO.input(GPIO_ECHO) == 1:
-        StopTime = time.time()
+	# save time of arrival
+	while GPIO.input(GPIO_ECHO) == 1:
+		StopTime = time.time()
  
-    # time difference between start and arrival
-    TimeElapsed = StopTime - StartTime
-    # multiply with the sonic speed (34300 cm/s)
-    # and divide by 2, because there and back
-    distance = (TimeElapsed * 34300) / 2
+	# time difference between start and arrival
+	TimeElapsed = StopTime - StartTime
+	# multiply with the sonic speed (34300 cm/s)
+	# and divide by 2, because there and back
+	distance = (TimeElapsed * 34300) / 2
  
-    return distance
+	return distance
  
 if __name__ == '__main__':
-    # call the forward method
-    
-    if False:
-    #try:
-        # while True:
-        # dist = distance()
-        # print ("Measured Distance = %.1f cm" % dist)
-        print "speed 1"
-        forward(30)
-        time.sleep(10)
-	p1.ChangeDutyCycle(0)
-        p2.ChangeDutyCycle(0)
-	time.sleep(2)
-
-        print "speed 2"
-        forward(50)
-        time.sleep(3)	
-        p1.ChangeDutyCycle(0)
-        p2.ChangeDutyCycle(0)
-	time.sleep(2)
-
-	print "speed 3"
-        forward(100)
-	time.sleep(3)
-
-	# End
-        p1.stop()
-        p2.stop()
-
-	GPIO.cleanup()
-
-
-            # if-else to set forward or stop
-            #if dist > 25:
-            #    forward()
-            #else:
-            #    stop()
-		#break
-            #time.sleep(0.1)
-    try:
-	time.sleep(3);
-        forward(75);
-        time.sleep(4);
-        
-        stop();
-        p1.stop();
-        p2.stop();
-        GPIO.cleanup();
+	# call the forward method
+	try:
+		forward()
+		time.sleep(10)
+		dir = 0
+		while True:
+			sens = distance()
+			if sens < 30:
+				reverse()
+				time.sleep(3)
+				if dir == 0:
+					slow_left()
+					time.sleep(2)
+					dir = 1
+					forward()
+				elif dir == 1:
+					slow_right()
+					time.sleep(2)
+					dir = 2
+					forward()
+				elif dir == 2:
+					fast_left()
+					time.sleep(1)
+					dir = 3
+					forward()
+				else:
+					fast_right()
+					time.sleep(1)
+					dir = 0
+					forward()       
+		#stop();
+		#p1.stop();
+		#p2.stop();
+		#GPIO.cleanup();
 	
-    	GPIO.output(GPIO_A1, False)
-    	GPIO.output(GPIO_A2, False)
-    	GPIO.output(GPIO_B1, False)
-    	GPIO.output(GPIO_B2, False) 
-    
-    # Reset by pressing CTRL + C
-    except KeyboardInterrupt:
-        print("Measurement stopped by User")
-        stop()
+	# Reset by pressing CTRL + C
+	except KeyboardInterrupt:
+		print("Measurement stopped by User")
+		stop()
 	p1.stop()
 	p2.stop()
 	GPIO.cleanup();
