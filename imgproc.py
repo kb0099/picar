@@ -314,13 +314,13 @@ try:
 				print("Need Turning!")
 				if high_1 > low_1:
 					# Turn Right
-					speed_right -= 10
-					speed_left += 10
+					speed_right -= 5
+					speed_left += 5
 				elif low_1 > high_1:
 					# Turn Left
 					print("LEFT")
-					speed_right += 10
-					speed_left -= 10
+					speed_right += 5
+					speed_left -= 5
 			# Check that cycles are valid
 			speed_left = checkCycle(speed_left)
 			speed_right = checkCycle(speed_right)
@@ -332,11 +332,11 @@ try:
 			midpoint = (high_1 + high_2) / 2
 			if midpoint >= (columns / 2) + 50:
 				# Turn Right
-				speed_right -= 5
-				speed_left += 5
+				speed_right -= 2
+				speed_left += 2
 			elif midpoint < (columns / 2) - 50:
-				speed_right += 5
-				speed_left -= 5
+				speed_right += 2
+				speed_left -= 2
 			else:# high_1 > low_1 and high_2 < low_2:
 				speed_left = default_cycle
 				speed_right = default_cycle
