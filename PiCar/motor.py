@@ -30,27 +30,3 @@ class Motor:
         pass;
 
 
-class Powertrain:
-    "Uses motors to drive the PiCar"
-    def __init__(left_wheel_forward_pin, left_wheel_backward_pin, right_wheel_forward_pin, right_wheel_backward_pin):
-        pass;
-
-class ObstacleDetector:
-    "Uses sensors to detect obstacles"
-    def __init__(trigger_pin, echo_pin):
-        pass;
-
-class ImageAnalyzer:
-    "Uses camera to process images"
-    def __init(camera_number):
-        pass;
-
-class PiCar:
-    " Represents a "
-    def __init__(self, left_fp, left_bp, right_fp, right_bp, front_trigger, front_echo, back_trigger, back_echo):
-        self.power_train = Powertrain(left_fp, left_bp, right_fp, right_bp);
-
-    def start():
-        pass;
-
-    
