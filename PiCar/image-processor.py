@@ -1,6 +1,6 @@
 
 
-class ImageAnalyzer:
+class ImageProcessor:
     "Uses camera to process images"
     def __init(camera_number):
         pass;
