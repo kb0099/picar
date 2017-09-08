@@ -5,16 +5,51 @@ import threading;
 import types;
 
 class ObstacleDetector(threading.Thread):
-  "Uses sensors to detect obstacles"        
+  '''Uses sensors to detect obstacles'''
+    
   def __init__(self, trigger_pin, echo_pin):
     threading.Thread.__init__(self)
+    self.trigger_pin  = trigger_pin;
+    self.echo_pin     = echo_pin;
+    
+    #set GPIO direction (IN / OUT)
+    GPIO.setup(trigger_pin, GPIO.OUT)
+    GPIO.setup(echo_pin, GPIO.IN)
+    
     '''Callbacks to be handled when motion is detected'''
     self.on_obstacle_detected_handlers = []
     self.current_distance = 0;
     self.threshold = 0.4;
+  
+  def _measure_distance():
+    # set Trigger to HIGH
+    GPIO.output(self.trigger_pin, True)
+ 
+    # set Trigger after 0.01ms to LOW
+    time.sleep(0.00001)
+    GPIO.output(self.trigger_pin, False)
+ 
+    StartTime = time.time()
+    StopTime = time.time()
+ 
+    # save StartTime
+    while GPIO.input(self.echo_pin) == 0:
+        StartTime = time.time()
+ 
+    # save time of arrival
+    while GPIO.input(self.echo_pin) == 1:
+        StopTime = time.time()
+ 
+    # time difference between start and arrival
+    TimeElapsed = StopTime - StartTime
+    # multiply with the sonic speed (34300 cm/s)
+    # and divide by 2, because there and back
+    self.current_distance = (TimeElapsed * 34300) / 2
+ 
+    return self.current_distance
 
   def get_distance_to_obstacle():
-      return self.current_distance;
+      return self._measure_distance();
 
   def set_distance_threshold(dt):
     '''used to trigger the callback'''
@@ -29,15 +64,15 @@ class ObstacleDetector(threading.Thread):
     self.on_obstacle_detected_handlers.append(handler);
 
   def run(self):
-    print("run called.");
+    print("Obstacle detector is running ..... ");
     while(True):
-      time.sleep(1);
-      self.current_distance = random.random()
+      self._measure_distance();
       if(self.current_distance > 0.4):
         for h in self.on_obstacle_detected_handlers:
           h(self.current_distance);
       else:
-        print("all good!");
+        print("all good!");      
+      time.sleep(2);  # wait before making next measurement.
           
 # Sample usage
 dt = ObstacleDetector(2,3);
@@ -47,3 +82,9 @@ print( "after calling process_loop");
 #dt.on_motion_detected_handler(lambda self, d : print("distance is %f " % d));
 dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
 dt.join();
+
+
+
+
+
+
