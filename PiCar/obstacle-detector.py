@@ -22,6 +22,7 @@ class ObstacleDetector(threading.Thread):
     self.threshold = 0.4;
   
   def _measure_distance():
+    '''should not be called manually (else, threading issues might occur)'''
     # set Trigger to HIGH
     GPIO.output(self.trigger_pin, True)
  
@@ -49,7 +50,8 @@ class ObstacleDetector(threading.Thread):
     return self.current_distance
 
   def get_distance_to_obstacle():
-      return self._measure_distance();
+    '''just returns currrent_distance as run() updates current_distance automatically'''
+      return self.current_distance;
 
   def set_distance_threshold(dt):
     '''used to trigger the callback'''
