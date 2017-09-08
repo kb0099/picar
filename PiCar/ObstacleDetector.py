@@ -7,7 +7,7 @@ import types;
 class ObstacleDetector(threading.Thread):
   '''Uses sensors to detect obstacles'''
     
-  def __init__(self, trigger_pin, echo_pin):
+  def __init__(self, trigger_pin, echo_pin, distance_threshold):
     threading.Thread.__init__(self)
     self.trigger_pin  = trigger_pin;
     self.echo_pin     = echo_pin;
@@ -19,7 +19,8 @@ class ObstacleDetector(threading.Thread):
     '''Callbacks to be handled when obstacle is detected'''
     self.on_obstacle_detected_handlers = []
     self.current_distance = 0;
-    self.threshold = 0.4;
+    '''distance threshold is used to trigger the handlers'''
+    self.threshold = distance_threshold;
   
   def _measure_distance():
     '''should not be called manually (else, threading issues might occur)'''
