@@ -16,7 +16,7 @@ class ObstacleDetector(threading.Thread):
     GPIO.setup(trigger_pin, GPIO.OUT)
     GPIO.setup(echo_pin, GPIO.IN)
     
-    '''Callbacks to be handled when motion is detected'''
+    '''Callbacks to be handled when obstacle is detected'''
     self.on_obstacle_detected_handlers = []
     self.current_distance = 0;
     self.threshold = 0.4;
@@ -58,7 +58,7 @@ class ObstacleDetector(threading.Thread):
   def is_closer_than(distance):
           pass;
     
-  '''Each call adds that handler to be called when motion is detected'''
+  '''Each call adds that handler to be called when obstacle is detected'''
   def on_obstacle_detected_handler(self, handler):
     #self.on_obstacle_detected_handlers.append(types.MethodType(handler, self));
     self.on_obstacle_detected_handlers.append(handler);
@@ -67,7 +67,7 @@ class ObstacleDetector(threading.Thread):
     print("Obstacle detector is running ..... ");
     while(True):
       self._measure_distance();
-      if(self.current_distance > 0.4):
+      if(self.current_distance >= self.threshold):
         for h in self.on_obstacle_detected_handlers:
           h(self.current_distance);
       else:
@@ -75,16 +75,12 @@ class ObstacleDetector(threading.Thread):
       time.sleep(2);  # wait before making next measurement.
           
 # Sample usage
-dt = ObstacleDetector(2,3);
-print("before calling process_loop");
-dt.start();
-print( "after calling process_loop");
-#dt.on_motion_detected_handler(lambda self, d : print("distance is %f " % d));
-dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
-dt.join();
-
-
-
-
-
+def obstacle_detector_sample_usage():
+  dt = ObstacleDetector(2,3);
+  print("before calling process_loop");
+  dt.start();
+  print( "after calling process_loop");
+  #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
+  dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+  dt.join();
 
