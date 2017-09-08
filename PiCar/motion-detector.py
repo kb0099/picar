@@ -30,16 +30,12 @@ class MotionDetector(threading.Thread):
         print("all good!");
           
 # Sample usage
-dt = MotionDetector();
-print("before calling process_loop");
-dt.start();
-print( "after calling process_loop");
-#dt.on_motion_detected_handler(lambda self, d : print("distance is %f " % d));
-dt.on_motion_detected_handler(lambda d : print("distance is %f " % d));
-dt.join();
-
-
-
-
-
+def motion_detector_sample_usage():
+  dt = MotionDetector();
+  print("before calling process_loop");
+  dt.start();
+  print( "after calling process_loop");
+  #dt.on_motion_detected_handler(lambda self, d : print("distance is %f " % d));
+  dt.on_motion_detected_handler(lambda d : print("distance is %f " % d));
+  dt.join();
 
