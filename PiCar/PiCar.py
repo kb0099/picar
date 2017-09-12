@@ -18,16 +18,17 @@ class PiCar:
         self.obstacle_detector = ObstacleDetector(front_trigger, frot_echo, front_threshold);
 
     def start():
+        self.obstacle_detector.start();
+        # self.image_processor.start();
         try:
             while(True):
-                if(self.obstacle_detector.get_distance_to_obstacle() < self.obstacle_detector.distance_threshold):
+                if(self.obstacle_detector.is_within_threshold()):
+                    self.pause();
                     time.sleep(1);
                     continue;       # escape rest.
-                # poll image analyzer
-                # get turning direction and turn to that
-                # Powertrain.steer(direction, left, right, etc.);
+                # get status from image processor // get turning direction and turn to that 
+                # Powertrain.steer(status_value_from_image_processor_in_negative_one_to_positive_one);
 
-                # obstacle detector can execute handler(s) when obstacles are detected.
                 # poll other sensors
                 # and take action
 
