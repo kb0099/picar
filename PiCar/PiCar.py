@@ -41,10 +41,11 @@ class PiCar:
     def stop():
         # probably can call cleanup here
         # release all resources
+        self.image_processor.cleanup();
         GPIO.cleanup();
 
     def pause():
-        # PowerTrain.stop();
+        PowerTrain.stop();
 
 
 # if main function
