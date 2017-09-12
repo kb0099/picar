@@ -58,8 +58,8 @@ class ObstacleDetector(threading.Thread):
     '''used to trigger the callback'''
     self.threshold = dt;
 
-  def is_closer_than(distance):
-          pass;
+  def is_within_threshold():
+    return self.get_distance_to_obstacle() <= self.distance_threshold;
     
   '''Each call adds that handler to be called when obstacle is detected'''
   def on_obstacle_detected_handler(self, handler):
@@ -70,7 +70,7 @@ class ObstacleDetector(threading.Thread):
     print("Obstacle detector is running ..... ");
     while(True):
       self._measure_distance();
-      if(self.current_distance >= self.threshold):
+      if(self.current_distance <= self.threshold):
         for h in self.on_obstacle_detected_handlers:
           h(self.current_distance);
       else:
@@ -79,7 +79,7 @@ class ObstacleDetector(threading.Thread):
           
 # Sample usage
 def obstacle_detector_sample_usage():
-  dt = ObstacleDetector(2,3);
+  dt = ObstacleDetector(2,3, 10);
   print("before calling process_loop");
   dt.start();
   print( "after calling process_loop");
