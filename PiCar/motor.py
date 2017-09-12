@@ -1,32 +1,77 @@
+"""Motor class to configure and use motors connected to GPIO pins.
+"""
 
+# Imports
 import RPi.GPIO as GPIO
 
-
-#GPIO Mode (BOARD / BCM)
+# Set GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM);
 
 class Motor:
-    "Represents a single PWM motor"
+    """Represents a single motor. Speed is set through PWM.
+    """
 
     def __init__(self, forward_pin, backward_pin, enable_pin):
-        self.fp     = forward_pin;
-        self.bp     = backward_pin;
-        self.pwm    = GPIO.PWM(enable_pin, 100);
+        """Constructor.
 
-        GPIO.setup(forward_pin, GPIO.OUT);
-        GPIO.setup(backward_pin, GPIO.OUT);
+        Args:
+            forward_pin (int): GPIO pin connected to motor's forward pin.
+            backward_pin (int): GPIO pin connected to motor's backward pin.
+            enable_pin (int): GPIO pin connected to motor's enable pin
+        """
+        # store pins
+        self.frwd_p = forward_pin
+        self.bkwd_p = backward_pin
+        self.enbl_p = enable_pin
 
-    def forward(duty_cycle=100):
-        GPIO.output(self.fp, True)
-        GPIO.output(self.bp, False)
-        self.pwm.setDutycycle(dyty_cycle);
-        
-    def backward(duty_cyele=100):
-        self.pwm.setDutycycle(dyty_cycle);
-        pass;
-    
-    def halt():
-        self.pwm.setDutycycle(0);
-        pass;
+        GPIO.setup( [self.frwd_p, self.bkwd_p], GPIO.OUT, initial=False)
 
+        # frequency (Hz) second parameter
+        self.pwm = GPIO.PWM(self.enbl_p, 100)
 
+        self.pwm.start(0.0)
+
+    def forward(duty_cycle=100.0):
+        """Drive the motor forward.
+
+        Args:
+            duty_cycle (float, optional): The duty cycle to run the motor at.
+                Defaults to 100.0.
+        """
+        GPIO.output(self.frwd_p, True)
+        GPIO.output(self.bkwd_p, False)
+        self.pwm.ChangeDutyCycle(dyty_cycle)
+
+    def backward(duty_cycle=100.0):
+        """Drive the motor backward.
+
+        Args:
+            duty_cycle (float, optional): The duty cycle to run the motor at.
+                Defaults to 100.0.
+        """
+        GPIO.output(self.frwd_p, False)
+        GPIO.output(self.bkwd_p, True)
+        self.pwm.ChangeDutyCycle(dyty_cycle)
+
+    def brake():
+        """Lock the motor to act as brake.
+        """
+        GPIO.output(self.frwd_p, True)
+        GPIO.output(self.bkwd_p, True)
+        self.pwm.ChangeDutyCycle(100.0)
+
+    def off():
+        """Disable power to motor to coast.
+        """
+        GPIO.output(self.frwd_p, False)
+        GPIO.output(self.bkwd_p, False)
+        self.pwm.ChangeDutyCycle(0.0)
+
+    def cleanup():
+        """Cleanup the GPIO pins used by the motor.
+
+        Calling this releases the motor, so further use of the motor will not
+        be possible.
+        """
+        self.pwm.stop();
+        GPIO.cleanup( [self.frwd_p, self.bkwd_p, self.enbl_p] )
