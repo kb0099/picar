@@ -8,7 +8,8 @@ class PiCar:
     pin (A) and backdirection pin (B). *_en stands for enable *_trigger and *_echo 
     are for ultrasonic sensor. 
     '''
-    def __init__(self, 
+    def __init__(self,
+        camera_port_num,
         left_fp, left_bp, left_en,
         right_fp, right_bp, right_en,
         front_trigger, front_echo, front_distance_threshold
@@ -16,6 +17,7 @@ class PiCar:
 
         self.power_train = Powertrain(left_fp, left_bp, left_en, right_fp, right_bp, right_en);
         self.obstacle_detector = ObstacleDetector(front_trigger, frot_echo, front_threshold);
+        self.image_processor = ImageProcesor(camera_port_num);
 
     def start():
         self.obstacle_detector.start();
@@ -27,6 +29,7 @@ class PiCar:
                     time.sleep(1);
                     continue;       # escape rest.
                 # get status from image processor // get turning direction and turn to that 
+                # status from image processor === [range of -1 to 1, and curviness or speed factor 0 to 1]
                 # Powertrain.steer(status_value_from_image_processor_in_negative_one_to_positive_one);
 
                 # poll other sensors
