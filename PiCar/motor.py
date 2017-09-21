@@ -31,7 +31,7 @@ class Motor:
 
         self.pwm.start(0.0)
 
-    def forward(duty_cycle=100.0):
+    def forward(self, duty_cycle=100.0):
         """Drive the motor forward.
 
         Args:
@@ -42,7 +42,7 @@ class Motor:
         GPIO.output(self.bkwd_p, False)
         self.pwm.ChangeDutyCycle(dyty_cycle)
 
-    def backward(duty_cycle=100.0):
+    def backward(self, duty_cycle=100.0):
         """Drive the motor backward.
 
         Args:
@@ -53,21 +53,21 @@ class Motor:
         GPIO.output(self.bkwd_p, True)
         self.pwm.ChangeDutyCycle(dyty_cycle)
 
-    def brake():
+    def brake(self):
         """Lock the motor to act as brake.
         """
         GPIO.output(self.frwd_p, True)
         GPIO.output(self.bkwd_p, True)
         self.pwm.ChangeDutyCycle(100.0)
 
-    def off():
+    def off(self):
         """Disable power to motor to coast.
         """
         GPIO.output(self.frwd_p, False)
         GPIO.output(self.bkwd_p, False)
         self.pwm.ChangeDutyCycle(0.0)
 
-    def cleanup():
+    def cleanup(self):
         """Cleanup the GPIO pins used by the motor.
 
         Calling this releases the motor, so further use of the motor will not

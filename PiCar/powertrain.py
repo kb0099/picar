@@ -30,7 +30,7 @@ class Powertrain:
         self.right = Motor(right_wheel_forward, right_wheel_backward,
                            right_wheel_enable)
 
-    def forward(duty_cycle):
+    def forward(self, duty_cycle):
         """Drive the powertrain forward.
 
         Args:
@@ -40,7 +40,7 @@ class Powertrain:
         self.left.forward(duty_cycle)
         self.right.forward(duty_cycle)
 
-    def reverse(duty_cycle);
+    def reverse(self, duty_cycle);
         """Drive the powertrain backward.
 
         Args:
@@ -50,7 +50,7 @@ class Powertrain:
         self.left.backward(duty_cycle)
         self.right.backward(duty_cycle)
 
-    def turn(left_duty_cycle, right_duty_cycle, left_forward=True,
+    def turn(self, left_duty_cycle, right_duty_cycle, left_forward=True,
              right_forward=True):
         """Drive motor speeds separately to turn.
 
@@ -69,7 +69,7 @@ class Powertrain:
         if (right_forward) self.right.forward(right_duty_cycle)
         else self.right.backward(right_duty_cycle)
 
-    def turn_left(max_duty_cycle, intensity):
+    def turn_left(self, max_duty_cycle, intensity):
         """Drive the motors to turn left.
 
         Args:
@@ -80,7 +80,7 @@ class Powertrain:
         # TODO how is intensity used to find left_duty_cycle?
         pass;
 
-    def turn_right(max_duty_cycle, intensity):
+    def turn_right(self, max_duty_cycle, intensity):
         """Drive the motors to turn right.
 
         Args:
@@ -91,7 +91,7 @@ class Powertrain:
         # TODO how is intensity used to find right_duty_cycle?
         pass;
 
-    def turn_intensity(max_duty_cycle, intensity):
+    def turn_intensity(self, max_duty_cycle, intensity):
         """Drive the motors to turn based on intensity and its sign.
 
         Args:
@@ -106,7 +106,7 @@ class Powertrain:
         if (intensity < 0) turn_left(max_duty_cycle, -1*intensity)
         else turn_right(max_duty_cycle, intensity)
 
-    def pivot(duty_cycle, clockwise=False):
+    def pivot(self, duty_cycle, clockwise=False):
         """Drive the motors to run opposite of each other to pivot.
 
         Args:
@@ -117,13 +117,13 @@ class Powertrain:
         if (clockwise) turn(duty_cycle, duty_cycle, right_forward=False)
         else turn(duty_cycle, duty_cycle, left_forward=False)
 
-    def stop():
+    def stop(self):
         """Stop the motors.
         """
         # TODO should this call brake() for a short time then call off()?
         pass;
 
-    def cleanup():
+    def cleanup(self):
         """Cleanup GPIO pins for the motors.
 
         Calling this releases the motors, so further use of the powertrain will
