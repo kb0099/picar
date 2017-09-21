@@ -61,10 +61,10 @@ if __name__ == '__main__':
             reverse()
             time.sleep(3)
             print ("Going right")
-            turn1()
+           #turn1()
             time.sleep(3)
             print ("Going left")
-            turn2()
+            #turn2()
             time.sleep(3)
             
  
