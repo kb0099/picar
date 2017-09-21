@@ -5,8 +5,8 @@ class Powertrain:
     """Represents a pair of motors. Uses the Motor class to control them.
     """
 
-    def __init__(left_wheel_forward, left_wheel_backward,  left_wheel_enable,
-                 right_wheel_forward, right_wheel_backward,
+    def __init__(self, left_wheel_forward, left_wheel_backward,
+                 left_wheel_enable, right_wheel_forward, right_wheel_backward,
                  right_wheel_enable):
         """Constructor.
 
@@ -107,7 +107,7 @@ class Powertrain:
         else turn_right(max_duty_cycle, intensity)
 
     def pivot(duty_cycle, clockwise=False):
-        """Drive the motors to run opposite of each other to pivot
+        """Drive the motors to run opposite of each other to pivot.
 
         Args:
             duty_cycle (float): The duty cycle to run the motors at.
