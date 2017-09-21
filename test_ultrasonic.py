@@ -6,8 +6,8 @@ import time
 GPIO.setmode(GPIO.BCM)
  
 #set GPIO Pins
-GPIO_TRIGGER = 18
-GPIO_ECHO = 24
+GPIO_TRIGGER = 2
+GPIO_ECHO = 3
  
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
@@ -17,7 +17,7 @@ def distance():
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
  
-    # set Trigger after 0.01ms to LOW
+    # set Trigger after 0.01ms to LOW 
     time.sleep(0.00001)
     GPIO.output(GPIO_TRIGGER, False)
  
