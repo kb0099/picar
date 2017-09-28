@@ -52,20 +52,21 @@ def left():
  
 if __name__ == '__main__':
     try:
-        while True:
-            
+	i = 0;
+        while (i<2):
+            i = i+1
             print ("Going forward")
             forward()
-            time.sleep(3)
+            time.sleep(1)
             print ("Going backward")
             reverse()
-            time.sleep(3)
-            print ("Going right")
-           #turn1()
-            time.sleep(3)
-            print ("Going left")
+            time.sleep(1)
+            #print ("Going right")
+            #turn1()
+            #time.sleep(3)
+            #print ("Going left")
             #turn2()
-            time.sleep(3)
+            #time.sleep(3)
             
  
         # Reset by pressing CTRL + C
