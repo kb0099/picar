@@ -40,7 +40,10 @@ class ImageProcessor:
 			self.lane_type = lane_t
     def check_status(self):
         """
-        Analyzes an image and provides instructions/parameters to support the vehicle's path
+        Analyzes an image and provides instructions/parameters to support the vehicle's path.
+        Returns a value between -1 and 1 that represents the turning action to be taken.
+        A positive value represents a right turn while a negative value represents a left turn.
+        The magnitude of the value determines the amount of turning desired (1/-1 being max).
         """
         img = self.get_image()
         # Get the rows, columns, and channel values from the image
@@ -125,18 +128,23 @@ class ImageProcessor:
 			if high_1 != 0 and low_1 != 0:
 				if high_1 > low_1:
 					# TODO: Turn Right
+					return .75
 				elif low_1 > high_1:
 					# TODO: Turn Left
+					return -.75
 		# Case where lanes are detected on both lines. [Using midpoint for preemptive adjustments]
 		elif high_1 != 0 and high_2 != 0 and low_1 != 0 and low_2 != 0:
 			# Default forward state
 			midpoint = (high_1 + high_2) / 2
 			if midpoint >= (columns / 2) + 50:
 				# TODO: Turn Right
+				return .25
 			elif midpoint < (columns / 2) - 50:
 				# TODO: Turn Left
+				return -.25
 			else:
 				# TODO: Continue Straight
+				return 0
         return
 
     def process_images(img):
