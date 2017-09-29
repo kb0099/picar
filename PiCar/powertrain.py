@@ -3,21 +3,37 @@
 
 def number_clamp(value, minimum, maximum):
     """ Function to clamp a given value between a minimum and maximum.
+
+    Args:
+        value: The value to clamp.
+        minimum: The minimum of the return value.
+        maximum: The maximum of the return value.
+
+    Returns:
+        Value clamped between the minimum and maximum.
     """
     return max(minimum, min(maximum, value))
 
 def get_new_duty_cycle(duty_cycle, intensity):
-    """Calculate duty cycle from the given intensity
+    """Calculate duty cycle from the given intensity.
+
+    The formula for this function has a greater intensity cause a greater
+    difference between the given and returned duty cycle. Intensity 0 can
+    return an equivalent duty cycle, and intensity 100 can return a 0 duty
+    cycle.
 
     Args:
         duty_cycle (float): The duty cycle to get a portion of.
         intensity (float): The numerical portion to find. Clamps range between
             100 and 0.
+
+    Returns:
+        float: A new, potentially slower duty cycle.
     """
     # clamp the intensity
     cl_intensity = number_clamp(intensity, 0.0, 100.0)
-    # calculate slower duty cycle
-    return max_duty_cycle * cl_intensity
+    # calculate new duty cycle
+    return max_duty_cycle * (100.0 - cl_intensity) / 100.0
 
 class Powertrain:
     """Represents a pair of motors. Uses the Motor class to control them.
@@ -87,32 +103,34 @@ class Powertrain:
         if (right_forward) self.right.forward(right_duty_cycle)
         else self.right.backward(right_duty_cycle)
 
-    def turn_left(self, max_duty_cycle, forward=True, intensity=50.0):
+    def turn_left(self, max_duty_cycle, intensity=50.0, forward = True):
         """Drive the motors to turn left.
 
         Args:
             max_duty_cycle (float): The duty cycle to run the right motor at.
                 The left motor runs at a portion of this.
+            intensity (float, optional): The intensity to turn left. The value
+                is clamped between 100 and 0. A greater intensity turns harder.
+                Defaults to 50.0.
             forward (boolean, optional): Flag for spinning motors forward.
                 Defaults to True.
-            intensity (float, optional): The intensity to turn left. The value
-                is clamped between 100 and 0. Defaults to 50.0.
         """
         # get min_duty_cycle
         min_duty_cycle = get_new_duty_cycle(max_duty_cycle, intensity)
         # pass to turn
         self.turn(min_duty_cycle, max_duty_cycle, forward, forward)
 
-    def turn_right(self, max_duty_cycle, forward=True, intensity=50.0):
+    def turn_right(self, max_duty_cycle, intensity=50.0, forward=True):
         """Drive the motors to turn right.
 
         Args:
             max_duty_cycle (float): The duty cycle to run the left motor at.
                 The right motor runs at a portion of this.
+            intensity (float, optional): The intensity to turn right. The value
+                is clamped between 100 and 0. A greater intensity turns harder.
+                Defaults to 50.0.
             forward (boolean, optional): Flag for spinning motors forward.
                 Defaults to True.
-            intensity (float, optional): The intensity to turn right. The value
-                is clamped between 100 and 0. Defaults to 50.0.
         """
         # get min_duty_cycle
         min_duty_cycle = get_new_duty_cycle(max_duty_cycle, intensity)
@@ -127,15 +145,16 @@ class Powertrain:
                 The other motor runs at a portion of this.
             intensity (float): The intensity to turn. The sign of the intensity
                 affects the turn direction (e.g. negative for left, positive
-                for right). The absolute value is clamped between 100 and 0.
-                Function fails if intensity is 0.0.
+                for right). The absolute value is clamped between 100 and 0. A
+                greater intensity turns harder. If intensity is 0, this
+                function drives motors equally.
             forward (boolean, optional): Flag for spinning motors forward.
                 Defaults to True.
         """
-        # TODO define intensity better: limits, how it calculates slower duty
-        #  cycle, behavior on 0; do this also for turn_left() and turn_right()
-        if (intensity < 0) self.turn_left(max_duty_cycle, -1*intensity)
-        elif (intensity > 0) self.turn_right(max_duty_cycle, intensity)
+        # need to multiply intensity by -1 if intensity is negative
+        if (intensity < 0) self.turn_left(max_duty_cycle, -1*intensity,
+                                          forward)
+        else self.turn_right(max_duty_cycle, intensity, forward)
 
     def pivot(self, duty_cycle, clockwise=False):
         """Drive the motors to run opposite of each other to pivot.
