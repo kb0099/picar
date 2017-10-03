@@ -1,6 +1,10 @@
 """Powertrain class to manage two motors along a similar axle.
 """
 
+# Imports
+from motor import Motor
+
+# Helper functions
 def number_clamp(value, minimum, maximum):
     """ Function to clamp a given value between a minimum and maximum.
 
