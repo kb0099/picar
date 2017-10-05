@@ -7,15 +7,15 @@ import time
 GPIO.setmode(GPIO.BCM)
  
 #set GPIO Pins
-GPIO_A1 = 2
-GPIO_A2 = 3
-GPIO_B1 = 14
-GPIO_B2 = 15
-GPIO_A3 = 4
-GPIO_B3 = 18
+GPIO_A1 = 14 #2
+GPIO_A2 = 15 #3
+GPIO_B1 = 26 #14
+GPIO_B2 = 19 #15
+GPIO_A3 = 18 #4
+GPIO_B3 = 13 #18
 
-GPIO_TRIGGER = 23
-GPIO_ECHO = 24
+GPIO_TRIGGER = 2#23
+GPIO_ECHO = 3#24
 
 #servo = PWM.Servo()
  
@@ -32,10 +32,10 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 
 #Initial Pwm
-p1 = GPIO.PWM(GPIO_A3, 1000)
-p2 = GPIO.PWM(GPIO_B3, 1000)
-p1.start(100);
-p2.start(100);
+p1 = GPIO.PWM(GPIO_A3, 100)
+p2 = GPIO.PWM(GPIO_B3, 100)
+p1.start(20);
+p2.start(20);
 
 def forward():
 	# set Trigger to HIGH
@@ -47,8 +47,8 @@ def forward():
 	#GPIO.output(GPIO_B3, True)
 
 	#for ii in range (20):
-	p1.ChangeDutyCycle(80)
-	p2.ChangeDutyCycle(80)
+	p1.ChangeDutyCycle(50)
+	p2.ChangeDutyCycle(50)
 	
 
 	#servo.set_servo(GPIO_A1, speed)
@@ -60,8 +60,8 @@ def reverse():
 	GPIO.output(GPIO_A2, True)
 	GPIO.output(GPIO_B1, False)
 	GPIO.output(GPIO_B2, True)
-	p1.ChangeDutyCycle(80)
-	p2.ChangeDutyCycle(80)
+	p1.ChangeDutyCycle(40)
+	p2.ChangeDutyCycle(40)
 	return
 
 def slow_right():
@@ -69,8 +69,8 @@ def slow_right():
 	GPIO.output(GPIO_A2, False)
 	GPIO.output(GPIO_B1, True)
 	GPIO.output(GPIO_B2, False)
-	p1.ChangeDutyCycle(80)
-	p2.ChangeDutyCycle(60)
+	p1.ChangeDutyCycle(40)
+	p2.ChangeDutyCycle(30)
 	return
 
 def fast_right():
@@ -78,8 +78,8 @@ def fast_right():
 	GPIO.output(GPIO_A2, False)
 	GPIO.output(GPIO_B1, False)
 	GPIO.output(GPIO_B2, True)
-	p1.ChangeDutyCycle(80)
-	p2.ChangeDutyCycle(60)
+	p1.ChangeDutyCycle(70)
+	p2.ChangeDutyCycle(40)
 	return
 
 def slow_left():
@@ -87,8 +87,8 @@ def slow_left():
 	GPIO.output(GPIO_A2, False)
 	GPIO.output(GPIO_B1, True)
 	GPIO.output(GPIO_B2, False)
-	p1.ChangeDutyCycle(60)
-	p2.ChangeDutyCycle(80)
+	p1.ChangeDutyCycle(30)
+	p2.ChangeDutyCycle(40)
 	return
 
 def fast_left():
@@ -96,8 +96,8 @@ def fast_left():
 	GPIO.output(GPIO_A2, True)
 	GPIO.output(GPIO_B1, True)
 	GPIO.output(GPIO_B2, False)
-	p1.ChangeDutyCycle(60)
-	p2.ChangeDutyCycle(80)
+	p1.ChangeDutyCycle(30)
+	p2.ChangeDutyCycle(70)
 	return
 
 def stop():
@@ -135,31 +135,41 @@ def distance():
 if __name__ == '__main__':
 	# call the forward method
 	try:
-		forward()
-		time.sleep(10)
+		#forward()
+		time.sleep(1)
+                print "sleeping 1"
 		dir = 0
 		while True:
+                        print "checking dist"
 			sens = distance()
+                        print "dist = ", sens
 			if sens < 30:
 				reverse()
-				time.sleep(3)
+                                print "reversing"
+				time.sleep(1)
 				if dir == 0:
 					slow_left()
-					time.sleep(2)
+                                        print "left"
+					time.sleep(1)
 					dir = 1
 					forward()
+                                        print "forward"
+                                        time.sleep(1);
 				elif dir == 1:
 					slow_right()
-					time.sleep(2)
+                                        print "slow right"
+					time.sleep(1)
 					dir = 2
 					forward()
 				elif dir == 2:
 					fast_left()
+                                        print "fast left"
 					time.sleep(1)
 					dir = 3
 					forward()
 				else:
 					fast_right()
+                                        print "fast right"
 					time.sleep(1)
 					dir = 0
 					forward()       
@@ -172,7 +182,8 @@ if __name__ == '__main__':
 	except KeyboardInterrupt:
 		print("Measurement stopped by User")
 		stop()
+		GPIO.cleanup();
 	p1.stop()
 	p2.stop()
 	GPIO.cleanup();
-
+	
