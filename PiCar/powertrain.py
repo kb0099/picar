@@ -37,7 +37,7 @@ def get_new_duty_cycle(duty_cycle, intensity):
     # clamp the intensity
     cl_intensity = number_clamp(intensity, 0.0, 100.0)
     # calculate new duty cycle
-    return max_duty_cycle * (100.0 - cl_intensity) / 100.0
+    return duty_cycle * (100.0 - cl_intensity) / 100.0
 
 class Powertrain:
     """Represents a pair of motors. Uses the Motor class to control them.
