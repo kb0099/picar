@@ -2,3 +2,12 @@
 config.py
 .vscode/
 __pycache__/
+
+
+# exclude emacs files
+*~
+\#*\#
+~*
+*#
+.#*
+
