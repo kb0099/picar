@@ -6,10 +6,10 @@ import time
 GPIO.setmode(GPIO.BCM)
  
 #set GPIO Pins
-GPIO_A1 = 2
-GPIO_A2 = 3
-GPIO_B1 = 14
-GPIO_B2 = 15
+GPIO_A1 = 14 #2
+GPIO_A2 = 15 #3
+GPIO_B1 = 26 #14
+GPIO_B2 = 19 #15
  
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_A1, GPIO.OUT)
@@ -52,20 +52,21 @@ def left():
  
 if __name__ == '__main__':
     try:
-        while True:
-            
+	i = 0;
+        while (i<2):
+            i = i+1
             print ("Going forward")
             forward()
-            time.sleep(3)
+            time.sleep(1)
             print ("Going backward")
             reverse()
-            time.sleep(3)
-            print ("Going right")
-            turn1()
-            time.sleep(3)
-            print ("Going left")
-            turn2()
-            time.sleep(3)
+            time.sleep(1)
+            #print ("Going right")
+            #turn1()
+            #time.sleep(3)
+            #print ("Going left")
+            #turn2()
+            #time.sleep(3)
             
  
         # Reset by pressing CTRL + C
