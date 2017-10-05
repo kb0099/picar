@@ -40,7 +40,7 @@ class Motor:
         """
         GPIO.output(self.frwd_p, True)
         GPIO.output(self.bkwd_p, False)
-        self.pwm.ChangeDutyCycle(dyty_cycle)
+        self.pwm.ChangeDutyCycle(duty_cycle)
 
     def backward(self, duty_cycle=100.0):
         """Drive the motor backward.
@@ -51,7 +51,7 @@ class Motor:
         """
         GPIO.output(self.frwd_p, False)
         GPIO.output(self.bkwd_p, True)
-        self.pwm.ChangeDutyCycle(dyty_cycle)
+        self.pwm.ChangeDutyCycle(duty_cycle)
 
     def brake(self):
         """Lock the motor to act as brake.
