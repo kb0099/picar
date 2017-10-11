@@ -78,7 +78,7 @@ class Powertrain:
         self.left.forward(duty_cycle)
         self.right.forward(duty_cycle)
 
-    def reverse(self, duty_cycle);
+    def reverse(self, duty_cycle):
         """Drive the powertrain backward.
 
         Args:
@@ -101,11 +101,15 @@ class Powertrain:
                 forward. Defaults to True.
         """
         # if-else to use forward/backward
-        if (left_forward) self.left.forward(left_duty_cycle)
-        else self.left.backward(left_duty_cycle)
+        if (left_forward):
+            self.left.forward(left_duty_cycle)
+        else:
+            self.left.backward(left_duty_cycle)
 
-        if (right_forward) self.right.forward(right_duty_cycle)
-        else self.right.backward(right_duty_cycle)
+        if (right_forward):
+            self.right.forward(right_duty_cycle)
+        else:
+            self.right.backward(right_duty_cycle)
 
     def turn_left(self, max_duty_cycle, intensity=50.0, forward = True):
         """Drive the motors to turn left.
@@ -156,9 +160,10 @@ class Powertrain:
                 Defaults to True.
         """
         # need to multiply intensity by -1 if intensity is negative
-        if (intensity < 0) self.turn_left(max_duty_cycle, -1*intensity,
-                                          forward)
-        else self.turn_right(max_duty_cycle, intensity, forward)
+        if (intensity < 0):
+            self.turn_left(max_duty_cycle, -1*intensity, forward)
+        else:
+            self.turn_right(max_duty_cycle, intensity, forward)
 
     def pivot(self, duty_cycle, clockwise=False):
         """Drive the motors to run opposite of each other to pivot.
@@ -168,8 +173,10 @@ class Powertrain:
             clockwise (boolean, optional): Flag for pivoting clockwise.
                 Defaults to False.
         """
-        if (clockwise) self.turn(duty_cycle, duty_cycle, right_forward=False)
-        else self.turn(duty_cycle, duty_cycle, left_forward=False)
+        if (clockwise):
+            self.turn(duty_cycle, duty_cycle, right_forward=False)
+        else:
+            self.turn(duty_cycle, duty_cycle, left_forward=False)
 
     def stop(self):
         """Stop the motors.
