@@ -1,5 +1,5 @@
 from ..motor import Motor;
-from ..config import *;
+from ..car_config import *;
 
 
 left = Motor(LFP, LBP, LEP);
