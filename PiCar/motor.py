@@ -24,7 +24,7 @@ class Motor:
         self.bkwd_p = backward_pin
         self.enbl_p = enable_pin
 
-        GPIO.setup( [self.frwd_p, self.bkwd_p], GPIO.OUT, initial=False)
+        GPIO.setup( [self.frwd_p, self.bkwd_p, self.enbl_p], GPIO.OUT, initial=False)
 
         # frequency (Hz) second parameter
         self.pwm = GPIO.PWM(self.enbl_p, 100)
