@@ -1,5 +1,8 @@
-from ..motor import Motor;
-from ..car_config import *;
+import sys;
+sys.path.append('..');
+
+from motor import Motor;
+from car_config import *;
 
 
 left = Motor(LFP, LBP, LEP);

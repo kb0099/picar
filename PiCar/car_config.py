@@ -20,7 +20,7 @@ RBP = 19;
 
 
 '''TRIGGER'''
-TRIGGER_PIN
+TRIGGER_PIN = 2;
 
 '''ECHO'''
-ECHO_PIN
+ECHO_PIN = 3;
