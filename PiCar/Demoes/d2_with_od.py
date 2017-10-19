@@ -13,6 +13,10 @@ sys.path.append('..');
 from ObstacleDetector import ObstacleDetector;
 from car_config import *;
 
+def od_handler(d):
+  print("distance is %f" % d);
+  return;
+
 # sample function
 def obstacle_detector_sample_usage():
   dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
@@ -20,7 +24,9 @@ def obstacle_detector_sample_usage():
   dt.start();
   print( "after starting the thread");
   #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
-  dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+  #dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+  dt.on_obstacle_detected_handler(od_handler);
+  
   try:
   	while 1:
   		time.sleep(.1)
