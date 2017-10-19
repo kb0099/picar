@@ -19,7 +19,7 @@ class PiCar:
         self.obstacle_detector = ObstacleDetector(front_trigger, frot_echo, front_threshold);
         self.image_processor = ImageProcesor(camera_port_num);
 
-    def start():
+    def start(self):
         self.obstacle_detector.start();
         # self.image_processor.start();
         try:
@@ -30,10 +30,31 @@ class PiCar:
                     continue;       # escape rest.
                 # get status from image processor // get turning direction and turn to that 
                 # status from image processor === [range of -1 to 1, and curviness or speed factor 0 to 1]
-                # Powertrain.steer(status_value_from_image_processor_in_negative_one_to_positive_one);
-
+                self.power_train.steer(self.image_processor.check_status());
+                
                 # poll other sensors
                 # and take action
+                
+                #
+                # Other logic that needs to be implemented.
+                #                 
+                # 1. Is it a temporary obstacle?
+                # 2. Can obstacle be avoided by turning around the obstacle?
+                #
+                
+                ###
+                ### Alternative logic for the whole process
+                ### 
+                
+                # Place all sensors processing logic in threads
+                # Register event handlers for each possible event in every sensor
+                # Then in main():
+                #   just setup the handlers.
+                # events/handlers:
+                #   - on_obstacle_within_threshold:     stop/pause the vehicle
+                #   - on_obstacle_removed:              continue
+                #   - on_lane_status_update:            steer vehicle accordingly
+                #   - any other sensor logic:           handle appropriately
 
         except KeyboardInterrupt:
             self.stop();
