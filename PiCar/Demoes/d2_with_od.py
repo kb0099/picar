@@ -16,8 +16,12 @@ left = Motor(LFP, LBP, LEP);
 right = Motor(RFP, RBP, REP);
 
 def stop(distance):
-	left.off()
-	right.off()
+	if distance > 10:
+		left.forward(50);
+	  	right.forward(50);
+	else:
+		left.off()
+		right.off()
 def od_handler(d):
   print("distance is %f" % d);
   return;
@@ -32,8 +36,7 @@ def obstacle_detector_sample_usage():
   dt.on_obstacle_detected_handler(stop)
   try:
   	while 1:
-  		left.forward(50);
-  		right.forward(50);
+  		time.sleep(.1)
   except KeyboardInterrupt:
   	print("TRYING TO STOP")
   	dt.do_run = False
