@@ -43,8 +43,18 @@ class PiCar:
                 #
                 
                 ###
-                ### Alternative logic
+                ### Alternative logic for the whole process
                 ### 
+                
+                # Place all sensors processing logic in threads
+                # Register event handlers for each possible event in every sensor
+                # Then in main():
+                #   just setup the handlers.
+                # events/handlers:
+                #   - on_obstacle_within_threshold:     stop/pause the vehicle
+                #   - on_obstacle_removed:              continue
+                #   - on_lane_status_update:            steer vehicle accordingly
+                #   - any other sensor logic:           handle appropriately
 
         except KeyboardInterrupt:
             self.stop();
