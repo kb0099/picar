@@ -34,7 +34,8 @@ def obstacle_detector_sample_usage():
 	  #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
 	  #dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
 	  dt.on_obstacle_detected_handler(stop)
-	  dt.join()
+	  while 1:
+	  	do_nothing = 1
 	except KeyboardInterrupt:
 	  print("TRYING TO STOP")
 	  dt.do_run = False
