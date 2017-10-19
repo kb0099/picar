@@ -13,9 +13,9 @@ from car_config import *;
 # sample function
 def obstacle_detector_sample_usage():
   dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
-  print("before calling process_loop");
+  print("before starting thread");
   dt.start();
-  print( "after calling process_loop");
+  print( "after starting the thread");
   #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
   dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
   dt.join();
