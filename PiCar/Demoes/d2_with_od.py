@@ -16,7 +16,7 @@ left = Motor(LFP, LBP, LEP);
 right = Motor(RFP, RBP, REP);
 
 def stop(distance):
-	print("Distance is {1}".format(distance))
+	print("Distance is {0}".format(distance))
 	if distance > 10:
 		left.forward(50);
 	  	right.forward(50);
