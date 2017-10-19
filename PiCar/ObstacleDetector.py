@@ -68,14 +68,17 @@ class ObstacleDetector(threading.Thread):
 
   def run(self):
     print("Obstacle detector is running ..... ");
-    while(True):
-      self._measure_distance();
-      if(self.current_distance <= self.threshold):
-        for h in self.on_obstacle_detected_handlers:
-          h(self.current_distance);
-      else:
-        print("all good!");      
-      time.sleep(2);  # wait before making next measurement.
+    try:
+      while(True):
+        self._measure_distance();
+        if(self.current_distance <= self.threshold):
+          for h in self.on_obstacle_detected_handlers:
+            h(self.current_distance);
+        else:
+          print("all good!");      
+        time.sleep(2);  # wait before making next measurement.
+    except KeyboardInterrupt:
+      return
           
 # Sample usage
 def obstacle_detector_sample_usage():

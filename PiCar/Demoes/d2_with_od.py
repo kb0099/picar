@@ -6,6 +6,7 @@ from __future__ import print_function;
 
 import sys;
 import time;
+import RPi.GPIO as GPIO
 
 sys.path.append('..');
 
@@ -25,3 +26,4 @@ def obstacle_detector_sample_usage():
   
 # run the function
 obstacle_detector_sample_usage();
+
