@@ -17,18 +17,16 @@ right = Motor(RFP, RBP, REP);
 
 def stop(distance):
 	print("Distance is {0}".format(distance))
-	if distance > 10:
-		left.forward(50);
-	  	right.forward(50);
-	else:
-		left.off()
-		right.off()
+	left.off()
+	right.off()
 def od_handler(d):
   print("distance is %f" % d);
   return;
 # sample function
 def obstacle_detector_sample_usage():
 	dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
+	left.forward(50)
+	right.forward(50)
 	try:
 	  print("before starting thread");
 	  dt.start();
