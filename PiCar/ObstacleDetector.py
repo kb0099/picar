@@ -93,6 +93,15 @@ def obstacle_detector_sample_usage():
   dt.start();
   print( "after calling process_loop");
   #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
-  dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+  dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));  
   dt.join();
+  
+def handler_creator(dt):
+  def handler1(d):
+    print("distance is %f" % d);
+    try:
+      pass;
+    except KeyboardInterrupt:
+      dt.stop_thread();
+  return handler1;
 
