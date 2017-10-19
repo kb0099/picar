@@ -87,15 +87,7 @@ class ObstacleDetector(threading.Thread):
       return
           
 # Sample usage
-def obstacle_detector_sample_usage():
-  dt = ObstacleDetector(2,3, 10);
-  print("before calling process_loop");
-  dt.start();
-  print( "after calling process_loop");
-  #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
-  dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));  
-  dt.join();
-  
+ 
 def handler_creator(dt):
   def handler1(d):
     print("distance is %f" % d);
@@ -105,3 +97,14 @@ def handler_creator(dt):
       dt.stop_thread();
   return handler1;
 
+def obstacle_detector_sample_usage():
+  dt = ObstacleDetector(2,3, 10);
+  print("before calling process_loop");
+  dt.start();
+  print( "after calling process_loop");
+  #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
+  
+  # dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));  
+  dt.on_obstacle_detected_handler(handler_creator(dt));
+  dt.join();
+ 
