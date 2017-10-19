@@ -28,21 +28,20 @@ def od_handler(d):
   return;
 # sample function
 def obstacle_detector_sample_usage():
-  dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
-  print("before starting thread");
-  dt.start();
-  print( "after starting the thread");
-  #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
-  #dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
-  dt.on_obstacle_detected_handler(stop)
-  try:
-  	while 1:
-  		do_nothing = 1
-  except KeyboardInterrupt:
-  	print("TRYING TO STOP")
-  	dt.do_run = False
-  	dt.join();
-  	print("STOPPED")
+	dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
+	try:
+	  print("before starting thread");
+	  dt.start();
+	  print( "after starting the thread");
+	  #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
+	  #dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+	  dt.on_obstacle_detected_handler(stop)
+	  dt.join()
+	except KeyboardInterrupt:
+	  print("TRYING TO STOP")
+	  dt.do_run = False
+	  dt.join();
+	  print("STOPPED")
   
   
 # run the function
