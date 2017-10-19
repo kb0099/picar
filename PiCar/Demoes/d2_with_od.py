@@ -24,11 +24,11 @@ def obstacle_detector_sample_usage():
   try:
   	while 1:
   		time.sleep(.1)
-  	except KeyboardInterrupt:
-  		print("TRYING TO STOP")
-  		dt.do_run = False
-  		dt.join();
-  		print("STOPPED")
+  except KeyboardInterrupt:
+  	print("TRYING TO STOP")
+  	dt.do_run = False
+  	dt.join();
+  	print("STOPPED")
   
   
 # run the function
