@@ -75,7 +75,8 @@ class ObstacleDetector(threading.Thread):
   def run(self):
     print("Obstacle detector is running ..... ");
     try:
-      while(self.not_stopped):
+      t = threading.currentThread()
+      while getattr(t, "do_run", True):
         self._measure_distance();
         if(self.current_distance <= self.threshold):
           for h in self.on_obstacle_detected_handlers:
