@@ -24,7 +24,7 @@ class ObstacleDetector(threading.Thread):
     '''distance threshold is used to trigger the handlers'''
     self.threshold = distance_threshold;
   
-  def _measure_distance():
+  def _measure_distance(self):
     '''should not be called manually (else, threading issues might occur)'''
     # set Trigger to HIGH
     GPIO.output(self.trigger_pin, True)
