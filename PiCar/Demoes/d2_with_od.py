@@ -12,6 +12,13 @@ sys.path.append('..');
 
 from ObstacleDetector import ObstacleDetector;
 from car_config import *;
+from motor import Motor;
+left = Motor(LFP, LBP, LEP);
+right = Motor(RFP, RBP, REP);
+
+def stop(distance):
+	left.off()
+	right.off()
 
 # sample function
 def obstacle_detector_sample_usage():
@@ -20,10 +27,12 @@ def obstacle_detector_sample_usage():
   dt.start();
   print( "after starting the thread");
   #dt.on_obstacle_detected_handler(lambda self, d : print("distance is %f " % d));
-  dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+  #dt.on_obstacle_detected_handler(lambda d : print("distance is %f " % d));
+  dt.on_obstacle_detected_handler(stop)
   try:
   	while 1:
-  		time.sleep(.1)
+  		left.forward(50);
+  		right.forward(50);
   except KeyboardInterrupt:
   	print("TRYING TO STOP")
   	dt.do_run = False
