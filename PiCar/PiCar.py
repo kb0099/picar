@@ -37,7 +37,14 @@ class PiCar:
                 
                 #
                 # Other logic that needs to be implemented.
-                # 
+                #                 
+                # 1. Is it a temporary obstacle?
+                # 2. Can obstacle be avoided by turning around the obstacle?
+                #
+                
+                ###
+                ### Alternative logic
+                ### 
 
         except KeyboardInterrupt:
             self.stop();
