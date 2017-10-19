@@ -12,7 +12,7 @@ class ObstacleDetector(threading.Thread):
     threading.Thread.__init__(self)
     self.trigger_pin  = trigger_pin;
     self.echo_pin     = echo_pin; 
-    self.not_stopped = false;
+    self.not_stopped  = True;
     
     #set GPIO direction (IN / OUT)
     GPIO.setmode(GPIO.BCM)
@@ -70,7 +70,7 @@ class ObstacleDetector(threading.Thread):
     self.on_obstacle_detected_handlers.append(handler);
 
   def stop_thread(self):
-    self.not_stopped = false;
+    self.not_stopped = False;
     
   def run(self):
     print("Obstacle detector is running ..... ");
