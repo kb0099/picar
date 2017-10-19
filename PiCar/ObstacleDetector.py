@@ -3,6 +3,7 @@ import time;
 import random;
 import threading;
 import types;
+import RPi.GPIO as GPIO
 
 class ObstacleDetector(threading.Thread):
   '''Uses sensors to detect obstacles'''
@@ -13,6 +14,7 @@ class ObstacleDetector(threading.Thread):
     self.echo_pin     = echo_pin;
     
     #set GPIO direction (IN / OUT)
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(trigger_pin, GPIO.OUT)
     GPIO.setup(echo_pin, GPIO.IN)
     
