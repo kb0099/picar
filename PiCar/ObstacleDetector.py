@@ -52,7 +52,7 @@ class ObstacleDetector(threading.Thread):
 
   def get_distance_to_obstacle():
     '''just returns currrent_distance as run() updates current_distance automatically'''
-      return self.current_distance;
+    return self.current_distance;
 
   def set_distance_threshold(dt):
     '''used to trigger the callback'''
