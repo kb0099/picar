@@ -1,4 +1,3 @@
-
 from __future__ import print_function;
 #
 # Sample demo for obstacle detector (od)
@@ -19,7 +18,9 @@ right = Motor(RFP, RBP, REP);
 def stop(distance):
 	left.off()
 	right.off()
-
+def od_handler(d):
+  print("distance is %f" % d);
+  return;
 # sample function
 def obstacle_detector_sample_usage():
   dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
