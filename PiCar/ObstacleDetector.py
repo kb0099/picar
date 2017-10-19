@@ -11,7 +11,8 @@ class ObstacleDetector(threading.Thread):
   def __init__(self, trigger_pin, echo_pin, distance_threshold):
     threading.Thread.__init__(self)
     self.trigger_pin  = trigger_pin;
-    self.echo_pin     = echo_pin;
+    self.echo_pin     = echo_pin; 
+    self.not_stopped = false;
     
     #set GPIO direction (IN / OUT)
     GPIO.setmode(GPIO.BCM)
@@ -68,10 +69,13 @@ class ObstacleDetector(threading.Thread):
     #self.on_obstacle_detected_handlers.append(types.MethodType(handler, self));
     self.on_obstacle_detected_handlers.append(handler);
 
+  def stop_thread(self):
+    self.not_stopped = false;
+    
   def run(self):
     print("Obstacle detector is running ..... ");
     try:
-      while(True):
+      while(self.not_stopped):
         self._measure_distance();
         if(self.current_distance <= self.threshold):
           for h in self.on_obstacle_detected_handlers:
