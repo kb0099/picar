@@ -12,6 +12,7 @@ sys.path.append('..');
 from ObstacleDetector import ObstacleDetector;
 from car_config import *;
 from motor import Motor;
+import time
 left = Motor(LFP, LBP, LEP);
 right = Motor(RFP, RBP, REP);
 
@@ -19,12 +20,20 @@ def stop(distance):
 	print("Distance is {0}".format(distance))
 	left.off()
 	right.off()
+	time.sleep(1)
+	left.forward(60)
+	right.backward(60)
+	time.sleep(1)
+	left.forward(50)
+	right.forward(50)
+	return
 def od_handler(d):
   print("distance is %f" % d);
   return;
 # sample function
 def obstacle_detector_sample_usage():
-	dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 10);
+	dt = ObstacleDetector(TRIGGER_PIN, ECHO_PIN, 20);
+	dt.set_distance_threshold(20)
 	left.forward(50)
 	right.forward(50)
 	try:
