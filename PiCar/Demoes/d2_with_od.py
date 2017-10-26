@@ -1,3 +1,5 @@
+
+from __future__ import print_function;
 #
 # Sample demo for obstacle detector (od)
 #
@@ -9,7 +11,6 @@ sys.path.append('..');
 
 from ObstacleDetector import ObstacleDetector;
 from car_config import *;
-from __future__ import print_function;
 
 # sample function
 def obstacle_detector_sample_usage():
