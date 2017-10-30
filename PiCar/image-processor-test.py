@@ -1,7 +1,7 @@
 #!python2
 from ImageProcessor import ImageProcessor;
-from Powertrain import Powertrain;
-import car_config.py
+from powertrain import Powertrain;
+import car_config
 
 def start(self):
     imgpr = ImageProcesor(0, 1)
@@ -15,18 +15,12 @@ def start(self):
             pt.turn_intensity(100, status)
 
     except KeyboardInterrupt:
-        self.stop();
+        self.stop()
 
 def stop():
     # probably can call cleanup here
     # release all resources
-    self.image_processor.cleanup();
-    GPIO.cleanup();
-
-def pause():
-    PowerTrain.stop();
-
-
-# if main function
-#    car_object = PiCar();
-#    car_object.Start(what_type_of_operation);
+    self.image_processor.cleanup()
+    GPIO.cleanup()
+    
+start()
