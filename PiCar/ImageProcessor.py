@@ -24,7 +24,7 @@ class ImageProcessor:
         self.lane_type = lane_type
         self.camera = cv2.VideoCapture(camera_port)
         pass;
-        
+
     def get_image(self):
         '''
         Fetches an image from the camera.
@@ -37,7 +37,7 @@ class ImageProcessor:
         Skips a number of frames to allow the webcam to adjust light levels etc.
         '''
         for i in xrange(30):
-            temp = get_image()
+            temp = self.get_image()
 
     def set_lane_type(self, lane_t):
         '''
