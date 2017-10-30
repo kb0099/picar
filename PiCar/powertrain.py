@@ -182,7 +182,8 @@ class Powertrain:
         """Stop the motors.
         """
         # TODO should this call brake() for a short time then call off()?
-        pass;
+        self.left.off()
+        self.right.off()
 
     def cleanup(self):
         """Cleanup GPIO pins for the motors.
