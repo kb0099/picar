@@ -1,5 +1,5 @@
 #!python2
-from ImageProcessor import ImageProcesor;
+from ImageProcessor import ImageProcessor;
 from Powertrain import Powertrain;
 import car_config.py
 
