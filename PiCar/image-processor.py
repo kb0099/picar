@@ -15,12 +15,12 @@ class ImageProcessor:
 		camera_port: An int representing the port of the desire camera.
 		lane_type: An int that tells the class to look for light lines on dark background (1) or dark lines on light background (0)
 	'''
-    def __init__(self, camera_port, lane_type):
-    	'''
-    	Return a ImageProcessor capturing from the provided camera port.
-    	camera_port: port of desired camera (int)
-    	lane_type: value 1 for light on dark, value 0 for dark on light lanes
-    	'''
+def __init__(self, camera_port, lane_type):
+        '''
+        Return a ImageProcessor capturing from the provided camera port.
+        camera_port: port of desired camera (int)
+        lane_type: value 1 for light on dark, value 0 for dark on light lanes
+        '''
         self.lane_type = lane_type
         self.camera = cv2.VideoCapture(camera_port)
         self.init_camera()
