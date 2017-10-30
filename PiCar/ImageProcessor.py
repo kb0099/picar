@@ -61,7 +61,7 @@ class ImageProcessor:
         # Convert image to greyscale
         bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # Process image using Binary Thresholding
-        if lane_type:
+        if self.lane_type:
             ret,thresh = cv2.threshold(bw, 245, 255, cv2.THRESH_BINARY)
         else:
             ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
