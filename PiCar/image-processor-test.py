@@ -1,7 +1,7 @@
 #!python2
 from ImageProcessor import ImageProcessor;
 from powertrain import Powertrain;
-import car_config
+from car_config import *
 
 def start():
     imgpr = ImageProcessor(0, 1)
