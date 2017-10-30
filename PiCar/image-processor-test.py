@@ -4,7 +4,7 @@ from powertrain import Powertrain;
 import car_config
 
 def start():
-    imgpr = ImageProcesor(0, 1)
+    imgpr = ImageProcessor(0, 1)
     pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
     # self.image_processor.start();
     try:
