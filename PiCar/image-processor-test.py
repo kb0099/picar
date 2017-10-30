@@ -3,7 +3,7 @@ from ImageProcessor import ImageProcessor;
 from powertrain import Powertrain;
 import car_config
 
-def start(self):
+def start():
     imgpr = ImageProcesor(0, 1)
     pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
     # self.image_processor.start();
@@ -22,5 +22,5 @@ def stop():
     # release all resources
     self.image_processor.cleanup()
     GPIO.cleanup()
-    
+
 start()
