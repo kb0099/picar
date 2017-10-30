@@ -23,8 +23,14 @@ class ImageProcessor:
         '''
         self.lane_type = lane_type
         self.camera = cv2.VideoCapture(camera_port)
-        self.init_camera()
         pass;
+        
+    def get_image(self):
+        '''
+        Fetches an image from the camera.
+        '''
+        retval, im = self.camera.read()
+        return im
 
     def init_camera(self):
         '''
@@ -32,13 +38,6 @@ class ImageProcessor:
         '''
         for i in xrange(30):
             temp = get_image()
-
-    def get_image(self):
-        '''
-        Fetches an image from the camera.
-        '''
-        retval, im = self.camera.read()
-        return im
 
     def set_lane_type(self, lane_t):
         '''

@@ -5,6 +5,7 @@ import car_config
 
 def start():
     imgpr = ImageProcessor(0, 1)
+    imgpr.init_camera()
     pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
     # self.image_processor.start();
     try:
