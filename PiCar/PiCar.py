@@ -1,6 +1,7 @@
 from ImageProcessor import ImageProcesor;
 from ObstacleDetector import ObstacleDetector;
 from Powertrain import Powertrain;
+import car_config.py
 
 class PiCar:
     '''

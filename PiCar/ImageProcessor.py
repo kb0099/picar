@@ -221,10 +221,14 @@ class ImageProcessor:
                 # Determine direction based on sign of image_midpoint - lower_midpoint
                 if (image_midpoint - lower_midpoint) > 0:
                     # Turn right
+                    print("Mild adjustment right...")
                     return .10
                 else:
                     # Turn Left
+                    print("Mild adjustment left...")
                     return .10
+            else:
+                print("Lane positioning is good!")
 
 
         # Expected Case: 1 lane detected in each row (car is veering to one side)
@@ -232,9 +236,11 @@ class ImageProcessor:
         if low_row_len == 1 and high_row_len == 1:
             # Left hand lane detected [from inside lane area]
             if low_row[0] < high_row[0]:
+                print("Single Lane turning right...")
                 return .30
             # Right hand lane detected [from inside lane area]
             elif low_row[0] > high_row[0]:
+                print("Single Lane turning left...")
                 return -.30
 
         # Unexpected Case: 1 lane detected in lower row and 2 detected in the upper row [off course and/or image parsing error]
@@ -244,10 +250,12 @@ class ImageProcessor:
             # Single lane on left side
             if min(abs(high_row[0] - low_row[0]), abs(high_row[1] - low_row[0])) == abs(high_row[0] - low_row[0]):
                 # Turn right
+                print("Lanes 2/1 turning right...")
                 return .30
             # Single lane on right side
             else:
                 # Turn left
+                print("Lanes 2/1 turning left...")
                 return -.30
 
         # Unexpected Case: 1 lane detected in upper row and 2 detected in the lower row [off course and/or image parsing error]
@@ -256,11 +264,15 @@ class ImageProcessor:
             # Single lane on left side
             if min(abs(low_row[0] - high_row[0]), abs(low_row[1] - high_row[0])) == abs(low_row[0] - high_row[0]):
                 # Turn right
+                print("Lanes 1/2 turning right...")
                 return .30
             # Single lane on right side
             else:
                 # Turn left
+                print("Lanes 2/1 turning left...")
                 return -.30
+
+        self.image_number++
 
         # If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
         # if  == 0 or low_2 == 0:
