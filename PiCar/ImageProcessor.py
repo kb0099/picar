@@ -191,8 +191,8 @@ class ImageProcessor:
 
         # Debug image output
 
-        cv2.imwrite('../../../images/' + self.init_time + "-" + self.image_number + ".jpg", thresh)
-        cv2.imwrite('../../../images/' + self.init_time + "-" + self.image_number + "_RAW.jpg", img)
+        cv2.imwrite('../../../images/' + self.init_time + "-" + str(self.image_number) + ".jpg", thresh)
+        cv2.imwrite('../../../images/' + self.init_time + "-" + str(self.image_number) + "_RAW.jpg", img)
 
         # Use the midpoints of detected lanes to tell the car if and how it needs to adjust
 
