@@ -196,6 +196,9 @@ class ImageProcessor:
 
         # Use the midpoints of detected lanes to tell the car if and how it needs to adjust
 
+        # The distance from the expected midpoint to begin making slight adjustments
+        midpoint_threshold = 50
+
         # Unexpected Case: >2 lanes in either row [occurs due to error in parsing image (noise etc)]
         # Action taken: Fix image processing issue/hope next image is better
         if low_row_len > 2 or high_row_len > 2:
