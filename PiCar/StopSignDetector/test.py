@@ -4,7 +4,7 @@ import cv2
 # sample test
 stop_cascade = cv2.CascadeClassifier('haarcascade_ss.xml')
 
-for im in ['s1.jpg', 's2.jpg']:
+for im in ['s1.jpg', 's2.jpg','s3.jpg', 's4.jpg']:
 	img = cv2.imread(im)
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	ss = stop_cascade.detectMultiScale(gray, 1.3, 5)
