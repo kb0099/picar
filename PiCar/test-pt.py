@@ -12,6 +12,9 @@ try:
     time.sleep(3)
     print("Turning Left Intensity .30")
     pt.turn_intensity(100, -.30)
+    time.sleep(3)
+    pt.stop()
+    GPIO.cleanup()
 except KeyboardInterrupt:
     pt.stop()
     GPIO.cleanup()
