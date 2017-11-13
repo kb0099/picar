@@ -3,6 +3,7 @@ from ImageProcessor import ImageProcessor;
 from powertrain import Powertrain;
 from car_config import *
 import time
+import RPi.GPIO as GPIO
 
 imgpr = ImageProcessor(0, 1)
 imgpr.init_camera()
