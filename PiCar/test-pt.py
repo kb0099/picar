@@ -13,7 +13,7 @@ try:
     time.sleep(1.5)
     pt.turn_intensity(90, 45)
     time.sleep(1.5)
-    pt.turn_intensity(90, 45)
+    pt.turn_intensity(90, -45)
     time.sleep(1.5)
     pt.stop()
     GPIO.cleanup()
