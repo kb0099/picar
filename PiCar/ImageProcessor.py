@@ -86,11 +86,11 @@ class ImageProcessor:
 
         for i in range(0, columns):
             # Check for lanes on lower image row
-            if(thresh.item(low, i) is 255 and color is 0):
+            if(thresh.item(low, i) is 255 and color_low is 0):
                 # If a white pixel is detected, set color to 1 and store the start point for the potential lane
                 color_low = 1
                 detection_start_low = i
-            elif(thresh.item(low, i) is 0 and color is 1):
+            elif(thresh.item(low, i) is 0 and color_low is 1):
                 # Once end of white region is reached, store data into relevant tuples
                 color = 0
                 detection_end_low = i
@@ -104,11 +104,11 @@ class ImageProcessor:
                     low_row_sizes += ((detection_end_low - detection_start_low),)
 
             # Check for lanes on upper image row
-            if(thresh.item(high, i) is 255 and color is 0):
+            if(thresh.item(high, i) is 255 and color_high is 0):
                 # If a white pixel is detected, set color to 1 and store the start point for the potential lane
                 color_high = 1
                 detection_start_high = i
-            elif(thresh.item(high, i) is 0 and color is 1):
+            elif(thresh.item(high, i) is 0 and color_high is 1):
                 # Once end of white region is reached, store data into relevant tuples
                 color_high = 0
                 detection_end_high = i
@@ -272,7 +272,7 @@ class ImageProcessor:
                 print("Lanes 2/1 turning left...")
                 return -.30
 
-        self.image_number++
+        self.image_number += 1
 
         # If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
         # if  == 0 or low_2 == 0:
