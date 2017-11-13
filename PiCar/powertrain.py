@@ -161,9 +161,9 @@ class Powertrain:
         """
         # need to multiply intensity by -1 if intensity is negative
         if (intensity < 0):
-            self.turn_left(max_duty_cycle, intensity=(-1*intensity))
+            self.turn_left(max_duty_cycle, intensity=(-1*intensity), forward=forward)
         else:
-            self.turn_right(max_duty_cycle, intensity=intensity)
+            self.turn_right(max_duty_cycle, intensity=intensity, forward=forward)
 
     def pivot(self, duty_cycle, clockwise=False):
         """Drive the motors to run opposite of each other to pivot.

@@ -1,6 +1,6 @@
 #!python2
-from ImageProcessor import ImageProcessor;
-from powertrain import Powertrain;
+from ImageProcessor import ImageProcessor
+from powertrain import Powertrain
 from car_config import *
 import time
 import RPi.GPIO as GPIO
