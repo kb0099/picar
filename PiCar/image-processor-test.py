@@ -2,6 +2,7 @@
 from ImageProcessor import ImageProcessor;
 from powertrain import Powertrain;
 from car_config import *
+import time
 
 def start():
     imgpr = ImageProcessor(0, 1)
@@ -15,6 +16,8 @@ def start():
             print("Status: {0}".format(status))
             if status != 5:
                 pt.turn_intensity(100, status)
+            time.sleep(.2)
+
 
     except KeyboardInterrupt:
         self.stop()
