@@ -27,7 +27,7 @@ def stop():
     # probably can call cleanup here
     # release all resources
     pt.stop()
-    image_processor.cleanup()
+    imgpr.cleanup()
     GPIO.cleanup()
 
 start()
