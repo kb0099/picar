@@ -4,10 +4,11 @@ from powertrain import Powertrain;
 from car_config import *
 import time
 
+imgpr = ImageProcessor(0, 1)
+imgpr.init_camera()
+pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
+
 def start():
-    imgpr = ImageProcessor(0, 1)
-    imgpr.init_camera()
-    pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
     # self.image_processor.start();
     try:
         pt.forward(100)
