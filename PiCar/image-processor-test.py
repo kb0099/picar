@@ -13,7 +13,8 @@ def start():
         while(True):
             status = imgpr.check_status()
             print("Status: {0}".format(status))
-            pt.turn_intensity(100, status)
+            if status != 5:
+                pt.turn_intensity(100, status)
 
     except KeyboardInterrupt:
         self.stop()

@@ -92,7 +92,7 @@ class ImageProcessor:
                 detection_start_low = i
             elif(thresh.item(low, i) is 0 and color_low is 1):
                 # Once end of white region is reached, store data into relevant tuples
-                color = 0
+                color_low = 0
                 detection_end_low = i
                 # Check that size of lane meets the minimum threshold
                 if (detection_end_low - detection_start_low) >= minimum_lane_size:
@@ -273,6 +273,7 @@ class ImageProcessor:
                 return -.30
 
         self.image_number += 1
+        return 5
 
         # If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
         # if  == 0 or low_2 == 0:
