@@ -20,12 +20,13 @@ def start():
 
 
     except KeyboardInterrupt:
-        self.stop()
+        stop()
 
 def stop():
     # probably can call cleanup here
     # release all resources
-    self.image_processor.cleanup()
+    pt.stop()
+    image_processor.cleanup()
     GPIO.cleanup()
 
 start()
