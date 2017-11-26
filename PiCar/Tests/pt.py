@@ -12,8 +12,8 @@ from powertrain import Powertrain;
 ## Usage : python pt.py <test#> <args>
 
 ## Example
-## To run test0 with argument 0
-##      python pt.py 0 0
+## To run test0 with argument 50
+##      python pt.py 0 50
 ##
 ## To run test1 with duty cycle of 40:
 ##      python pt.py 1 40
