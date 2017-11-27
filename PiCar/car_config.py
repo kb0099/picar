@@ -2,10 +2,10 @@
 LEP = 18;
 
 '''LEFT_FORWARD_PIN'''
-LFP = 15;
+LFP = 14;
 
 '''LEFT_BACKWARD_PIN'''
-LBP = 14;
+LBP = 15;
 
 
 '''RIGHT_ENABLE_PIN'''
