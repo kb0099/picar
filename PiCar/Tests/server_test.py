@@ -26,7 +26,7 @@ class S(BaseHTTPRequestHandler):
             if(filepath == "/"):  
                 self.send_file("index.html");
 
-            elif (filepath == "/cmd"):          
+            elif (filepath == "/cmd"):       
                 self._set_headers()
                 self.stopped = True;
                 self.wfile.write("closing...");
@@ -59,6 +59,8 @@ class S(BaseHTTPRequestHandler):
         with open(complete_path, 'rb') as content:
             self._set_headers(mime_type, code)    # placing header here will help to handle 404
             shutil.copyfileobj(content, self.wfile)
+        self.finish(); # supposed to close connection?
+        self.connection.close();
         
         
 def run(server_class=HTTPServer, handler_class=S, port=8282):
@@ -68,7 +70,7 @@ def run(server_class=HTTPServer, handler_class=S, port=8282):
         handler_class.allow_reuse_address = True
         httpd = server_class(server_address, handler_class)
         httpd.allow_reuse_address = True
-        print 'Starting httpd server . . .'
+        print ('Starting httpd server . . .', port)
         httpd.serve_forever()
 
     except KeyboardInterrupt:
