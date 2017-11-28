@@ -27,7 +27,7 @@ class Motor:
         GPIO.setup( [self.frwd_p, self.bkwd_p, self.enbl_p], GPIO.OUT, initial=False)
 
         # frequency (Hz) second parameter
-        self.pwm = GPIO.PWM(self.enbl_p, 2000)
+        self.pwm = GPIO.PWM(self.enbl_p, 75)
 
         self.pwm.start(0.0)
 

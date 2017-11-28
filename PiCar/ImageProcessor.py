@@ -190,9 +190,13 @@ class ImageProcessor:
         print("\n")
 
         # Debug image output
+	save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
 
-        cv2.imwrite('../../../images/' + self.init_time + "-" + str(self.image_number) + ".jpg", thresh)
-        cv2.imwrite('../../../images/' + self.init_time + "-" + str(self.image_number) + "_RAW.jpg", img)
+        cv2.imwrite(save_string, thresh)
+        cv2.imwrite('RAW_' + save_string, img)
+
+	print("Image saved to {0}".format(save_string))
+	self.image_number += 1
 
         # Use the midpoints of detected lanes to tell the car if and how it needs to adjust
 
@@ -247,6 +251,22 @@ class ImageProcessor:
                 print("Single Lane turning left...")
                 return -15
 
+	# Unexpected Case: Only 1 lane detected in upper or lower regions combined [most likely found in lower region].
+        # This should occur when the vehicle is veering out of the lanes and requires a large change in duty cycle.
+        if low_row_len + high_row_len == 1:
+            # Use midpoint of image to determine which direction to turn.
+            image_midpoint = columns / 2
+            if low_row_len == 1:
+                if low_row[0] >= image_midpoint:
+                    # Turn Right
+                    return 15
+                else:
+                    # Turn Left
+                    return -15
+            else:
+                # I don't expect this to ever occur, will implement if observed.
+                print("SINGLE LANE IN UPPER REGION CHECK IMAGE AND IMPLEMENT BEHAVIOR!!!!!!!!!!!!!!!!!!!!\n$$$$$$$$$$$$\n$$$$$$$$$$$\n$$$$$$$$$$$")
+
         # Unexpected Case: 1 lane detected in lower row and 2 detected in the upper row [off course and/or image parsing error]
         # Action taken: Determine which direction to turn using lane orientation and make more significant adjustments.
         if low_row_len == 1 and high_row_len == 2:
@@ -276,8 +296,7 @@ class ImageProcessor:
                 print("Lanes 2/1 turning left...")
                 return -10
 
-        self.image_number += 1
-        return 5
+        return 17
 
         # If only one lane is detected, determine which direction it is 'slanting' to tell the car which way to go
         # if  == 0 or low_2 == 0:
