@@ -32,13 +32,13 @@ try:
 
     # turn wide
     print("calling turn_left(50, 20)")
-    pwr.turn_left(100, 40)
+    pwr.turn_left(100, 80)
     time.sleep(t)
     pwr.stop()
 
     # turn tight
     print("calling turn_right(80, 80)")
-    pwr.turn_right(100, 40)
+    pwr.turn_right(100, 80)
     time.sleep(t)
     pwr.stop()
 
