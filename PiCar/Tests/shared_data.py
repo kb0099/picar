@@ -7,6 +7,10 @@ class SharedData:
 
     # complete info/status
     pi_status =  {
+        # whether stopped
+        'motors_stopped'             : True,
+        'forward'                    : True,    # set to go forward
+
         # left_motor
         'left_motor_dc'              : 0,
         'left_motor_dc_adjustment'   : 0,
