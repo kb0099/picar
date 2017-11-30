@@ -21,8 +21,18 @@ def start():
 	#time.sleep(3)
 	#pt.turn_intensity(base_duty_cycle, 80)
 	#time.sleep(3)
+
+    #populate queue
+    imgs = Queue()
+    imgs.put(imgpr.get_image())
+    imgs.put(imgpr.get_image())
+    imgs.put(imgpr.get_image())
+    imgs.put(imgpr.get_image())
+    imgs.put(imgpr.get_image())
 	lastAdj = 0
         while(True):
+        img_to_process = imgs.get()
+        imgs.put(imgpr.get_image())
 	    #pt.stop()
 	    #time.sleep(.05)
 	    print("\n\n")

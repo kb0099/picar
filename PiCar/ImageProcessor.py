@@ -51,14 +51,14 @@ class ImageProcessor:
             return
         else:
             self.lane_type = lane_t
-    def check_status(self):
+    def check_status(self, img):
         '''
         Analyzes an image and provides instructions/parameters to support the vehicle's path.
         Returns a value between -1 and 1 that represents the turning action to be taken.
         A positive value represents a right turn while a negative value represents a left turn.
         The magnitude of the value determines the amount of turning desired (1/-1 being max).
         '''
-        img = self.get_image()
+        #img = self.get_image()
         # Get the rows, columns, and channel values from the image
         rows,columns,channels = img.shape
         # Convert image to greyscale
