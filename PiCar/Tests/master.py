@@ -20,11 +20,9 @@ from powertrain import Powertrain;
     2. integrate everything together
 '''
 
-
-
 # some methods need to be added on motors or powertrain
 # on powertrain
-def acclerate(self):
+def acclerate(self, increment):
     # left motor
     new_dc = SharedData.pi_status['left_motor_dc'] + increment;
     self.left.pwm.changeDutyCycle(new_dc); 
@@ -41,65 +39,88 @@ class SmartCar:
         right_fp, right_bp, right_en,
         front_trigger, front_echo, front_distance_threshold):
 
-        self.power_train        = Powertrain(left_fp, left_bp, left_en, right_fp, right_bp, right_en);
-        self.obstacle_detector  = ObstacleDetector(front_trigger, frot_echo, front_threshold);
-        self.image_processor    = ImageProcesor(camera_port_num);
+        self.power_train         = Powertrain(left_fp, left_bp, left_en, right_fp, right_bp, right_en);
+        #self.obstacle_detector  = ObstacleDetector(front_trigger, frot_echo, front_threshold);
+        #self.image_processor    = ImageProcesor(camera_port_num);
 
-    # decelerate could work by giving negative increment.
-    def accelerate(self, increment):
-        self.power_train.accelerate(increment);
-
+    # incr_factor = 1 for accelerate, and -1 for decelerate
+    def accelerate(self, incr_factor = 1):
+        if (SharedData.pi_status['motor_stopped']):
+            #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
+            self.power_train.left.pwm.changeDutyCycle(SharedData.pi_status['default_duty_cycle']); 
+            self.power_train.right.pwm.changeDutyCycle(SharedData.pi_status['default_duty_cycle']); 
+        else:
+            #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
+            new_dc = SharedData.pi_status['left_motor_dc'] + incr_factor * SharedData.pi_status['dc_delta'];
+            if(new_dc < 10):
+                self.stop();
+            else:            
+                self.power_train.left.pwm.changeDutyCycle(new_dc);
+                self.power_train.right.pwm.changeDutyCycle(new_dc); 
 
     # change backward or forward : changes direction and stops
-    def change_bf_direction(self, forward=True):
-        if(SharedData.pi_status.is_set_forward != forward):
-            SharedData.pi_status.is_set_forward = forward;
+    def set_forward_direction(self, forward=True):
+        SharedData.pi_status['direction']               = 0;
+        if(SharedData.pi_status['headed_forward']       != forward):
+            SharedData.pi_status['headed_forward']      = forward;
             self.stop();
+
+    def change_left_right(self, dir):
+        SharedData.pi_status['direction']               -= direction_delta;
 
     # let it stop on its own
     def stop(self):
         self.power_train.stop();
+
+    def cleanup(self):
+        self.power_train.cleanup();
+
+    def handle_cmd(self, cmd):
+        if(cmd == CMD_FORWARD):
+            self.set_forward_direction(True);
+
+        elif (cmd == CMD_BACKWARD):
+            self.set_forward_direction(False);
+            pass;    
+
+        elif(cmd == CMD_ACCELERATE):
+            self.acclerate();
+
+        elif(cmd == CMD_DECELERATE):
+            self.accelerate(-1);
+
+        elif(cmd == CMD_LEFT):
+            SharedData.pi_status['direction']           -= direction_delta;
+            pass;
+
+        elif(cmd == CMD_RIGHT):
+            SharedData.pi_status['direction']           += direction_delta;
+            pass;
+
+        elif (cmd == CMD_STOP):
+            self.stop();
+
+        elif (cmd == CMD_CLEANUP):
+            self.cleanup();
+
+        elif (cmd == CMD_TERMINATE):
+            '''
+            self.wfile.write("closing...");
+            self.stopped = True;
+            self.server.shutdown();
+            self.socket.close()
+            print ("server: closing...");
+            '''
+            pass;
+            return;
+
 
 
 # global smart_car object
 smart_car = SmartCar();
 
 # extend
-smart_car.power_train.accelerate = accelerate;
-
-def handle_cmd(cmd):
-    if(cmd == CMD_FORWARD):
-        change_bf_direction()
-
-
-    elif (cmd == CMD_BACKWARD):
-        output = '{"result": "CMD_BACKWARD"}';
-        pass;    
-
-    elif(cmd == CMD_ACCELERATE):
-
-    elif(cmd == CMD_DECELERATE):
-        output = '{"result": "CMD_DECL"}';
-        pass;
-
-    elif(cmd == CMD_LEFT):
-        output = '{"result": "CMD_LEFT"}';
-        pass;
-
-    elif(cmd == CMD_RIGHT):
-        output = '{"result": "CMD_RIGHT"}';
-        pass;
-
-    elif (cmd == CMD_TERMINATE):
-        '''
-        self.wfile.write("closing...");
-        self.stopped = True;
-        self.server.shutdown();
-        self.socket.close()
-        print ("server: closing...");
-        '''
-        pass;
-        return;
+# smart_car.power_train.accelerate = accelerate;
 
 # Main execution
 if __name__ == "__main__":
@@ -119,4 +140,5 @@ if __name__ == "__main__":
         
         # for test:
         SharedData.pi_status['od_back_distance'] = random.randint(2, 50);
+
 
