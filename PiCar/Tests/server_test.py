@@ -39,7 +39,6 @@ class S(BaseHTTPRequestHandler):
                 cmd = int(filepath[5:]);          # catches string after "/cmd/"  
                 output = None;
                 output = '{"result": "status"}';
-
                
                 if(cmd == CMD_FORWARD):
                     output = '{"result": "CMD_FORWARD"}';    # move forward , should do IPC or threading or what?
@@ -48,6 +47,9 @@ class S(BaseHTTPRequestHandler):
                     pass;    
                 elif(cmd == CMD_ACCELERATE):
                     output = '{"result": "CMD_ACCL"}';
+                    pass;  
+                elif(cmd == CMD_DECELERATE):
+                    output = '{"result": "CMD_DECL"}';
                     pass;
                 elif(cmd == CMD_LEFT):
                     output = '{"result": "CMD_LEFT"}';
@@ -105,20 +107,25 @@ def run(server_class=HTTPServer, handler_class=S, port=8282):
         handler_class.allow_reuse_address = True
         httpd = server_class(server_address, handler_class)
         httpd.allow_reuse_address = True
+        httpd.stopped = False
         print ('Starting httpd server . . .', port)
         httpd.serve_forever()
 
-    except KeyboardInterrupt:
+    except KeyboardInterrupt:        
+        httpd.stopped = True;
+        httpd.shutdown()
+        httpd.socket.close()
         httpd.server_close()
-        #httpd.shutdown()
-        #httpd.socket.close()
         print("\n\nclosed....\nSuccessfully!");
 
     #except:
     #    print "address already in use?"
 def handler_stop_signals(signum, frame):
+    global httpd;
+    httpd.shutdown();
     httpd.stopped = True;
-    httpd.server_close(); 
+    httpd.serve_forever();
+    httpd.server_close();
     print("\n\nclosed....\nSuccessfully!");
 
 if __name__ == "__main__":
