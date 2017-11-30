@@ -4,7 +4,6 @@ from powertrain import Powertrain
 from car_config import *
 import time
 import RPi.GPIO as GPIO
-import Queue
 
 imgpr = ImageProcessor(0, 1)
 imgpr.init_camera()
@@ -22,25 +21,16 @@ def start():
     	#time.sleep(3)
     	#pt.turn_intensity(base_duty_cycle, 80)
     	#time.sleep(3)
-
-        #populate queue
-        imgs = Queue.Queue()
-        imgs.put(imgpr.get_image())
-        imgs.put(imgpr.get_image())
-        imgs.put(imgpr.get_image())
-        imgs.put(imgpr.get_image())
-        imgs.put(imgpr.get_image())
+        
     	lastAdj = 0
         while(True):
-            img_to_process = imgs.get()
-            imgs.put(imgpr.get_image())
     	    #pt.stop()
     	    #time.sleep(.05)
-    	    print("\n\n")
-            adjustment = imgpr.check_status(img_to_process) * 1000
-            print("Adjustment: {0}".format(adjustment))
+    	    #print("\n\n")
+            adjustment = imgpr.check_status() * 1000
+            #print("Adjustment: {0}".format(adjustment))
             if adjustment == 17 * 1000 or adjustment == 0:
-                print("Unexpected resolution of image processing method.\n")
+                #print("Unexpected resolution of image processing method.\n")
                 pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
             else:
                 pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))

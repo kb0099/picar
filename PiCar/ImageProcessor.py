@@ -51,14 +51,14 @@ class ImageProcessor:
             return
         else:
             self.lane_type = lane_t
-    def check_status(self, img):
+    def check_status(self):
         '''
         Analyzes an image and provides instructions/parameters to support the vehicle's path.
         Returns a value between -1 and 1 that represents the turning action to be taken.
         A positive value represents a right turn while a negative value represents a left turn.
         The magnitude of the value determines the amount of turning desired (1/-1 being max).
         '''
-        #img = self.get_image()
+        img = self.get_image()
         # Get the rows, columns, and channel values from the image
         rows,columns,channels = img.shape
         # Convert image to greyscale
@@ -181,26 +181,30 @@ class ImageProcessor:
         # else:
         #     high_2 = 0
 
+
+
         # Debug
-        print("Number of lanes detected on lower row: {0}\nNumber of lanes detected on upper row: {1}\n".format(low_row_len, high_row_len))
-        print("Midpoints of lanes detected on lower row: ")
-        for mid in low_row:
-            print(str(mid))
-        print("\n")
-        print("Midpoints of lanes detected on upper row: ")
-        for mid in high_row:
-            print(str(mid))
-        print("\n")
+        # print("Number of lanes detected on lower row: {0}\nNumber of lanes detected on upper row: {1}\n".format(low_row_len, high_row_len))
+        # print("Midpoints of lanes detected on lower row: ")
+        # for mid in low_row:
+        #     print(str(mid))
+        # print("\n")
+        # print("Midpoints of lanes detected on upper row: ")
+        # for mid in high_row:
+        #     print(str(mid))
+        # print("\n")
 
-        # Debug image output
-        save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
-        raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
+        # # Debug image output
+        # save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
+        # raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
 
-        cv2.imwrite(save_string, thresh)
-        cv2.imwrite(raw_save_string, img)
+        # cv2.imwrite(save_string, thresh)
+        # cv2.imwrite(raw_save_string, img)
 
-        print("Image saved to {0}".format(save_string))
-        self.image_number += 1
+        # print("Image saved to {0}".format(save_string))
+        # self.image_number += 1
+
+
 
         # Use the midpoints of detected lanes to tell the car if and how it needs to adjust
 
@@ -210,13 +214,15 @@ class ImageProcessor:
         # Unexpected Case: >2 lanes in either row [occurs due to error in parsing image (noise etc)]
         # Action taken: Fix image processing issue/hope next image is better
         if low_row_len > 2 or high_row_len > 2:
-            print("More than 2 lane points in one row, check output image {0} to view issue.".format(self.image_number))
+            return 17
+            #print("More than 2 lane points in one row, check output image {0} to view issue.".format(self.image_number))
 
         # Unexpected Case: 0 lanes detected [car is off course by a significant margin]
         # Action taken: Call a "recovery" function that attempts to relocate lanes
         if low_row_len == 0 and high_row_len == 0:
-            print("Off course! No lanes detected!")
+            #print("Off course! No lanes detected!")
             # TODO: Recovery function
+            return 17
 
         # Expected Case: 2 lanes detected in each row
         # Action taken: Slight adjustments based on location of detected lines
@@ -232,14 +238,14 @@ class ImageProcessor:
                 # Determine direction based on sign of image_midpoint - lower_midpoint
                 if (image_midpoint - lower_midpoint) > 0:
                     # Turn right
-                    print("Mild adjustment right...")
+                    #print("Mild adjustment right...")
                     return 5
                 else:
                     # Turn Left
-                    print("Mild adjustment left...")
+                    #print("Mild adjustment left...")
                     return -5
             else:
-                print("Lane positioning is good!")
+                #print("Lane positioning is good!")
                 return 0
 
 
@@ -248,11 +254,11 @@ class ImageProcessor:
         if low_row_len == 1 and high_row_len == 1:
             # Left hand lane detected [from inside lane area]
             if low_row[0] < high_row[0]:
-                print("Single Lane turning right...")
+                #print("Single Lane turning right...")
                 return 15
             # Right hand lane detected [from inside lane area]
             elif low_row[0] > high_row[0]:
-                print("Single Lane turning left...")
+                #print("Single Lane turning left...")
                 return -15
 
 	# Unexpected Case: Only 1 lane detected in upper or lower regions combined [most likely found in lower region].
@@ -269,7 +275,8 @@ class ImageProcessor:
                     return -15
             else:
                 # I don't expect this to ever occur, will implement if observed.
-                print("SINGLE LANE IN UPPER REGION CHECK IMAGE AND IMPLEMENT BEHAVIOR!!!!!!!!!!!!!!!!!!!!\n$$$$$$$$$$$$\n$$$$$$$$$$$\n$$$$$$$$$$$")
+                #print("SINGLE LANE IN UPPER REGION CHECK IMAGE AND IMPLEMENT BEHAVIOR!!!!!!!!!!!!!!!!!!!!\n$$$$$$$$$$$$\n$$$$$$$$$$$\n$$$$$$$$$$$")
+                return 17
 
         # Unexpected Case: 1 lane detected in lower row and 2 detected in the upper row [off course and/or image parsing error]
         # Action taken: Determine which direction to turn using lane orientation and make more significant adjustments.
@@ -278,12 +285,12 @@ class ImageProcessor:
             # Single lane on left side
             if min(abs(high_row[0] - low_row[0]), abs(high_row[1] - low_row[0])) == abs(high_row[0] - low_row[0]):
                 # Turn right
-                print("Lanes 2/1 turning right...")
+                #print("Lanes 2/1 turning right...")
                 return 10
             # Single lane on right side
             else:
                 # Turn left
-                print("Lanes 2/1 turning left...")
+                #print("Lanes 2/1 turning left...")
                 return -10
 
         # Unexpected Case: 1 lane detected in upper row and 2 detected in the lower row [off course and/or image parsing error]
@@ -292,12 +299,12 @@ class ImageProcessor:
             # Single lane on left side
             if min(abs(low_row[0] - high_row[0]), abs(low_row[1] - high_row[0])) == abs(low_row[0] - high_row[0]):
                 # Turn right
-                print("Lanes 1/2 turning right...")
+                #print("Lanes 1/2 turning right...")
                 return 10
             # Single lane on right side
             else:
                 # Turn left
-                print("Lanes 2/1 turning left...")
+                #print("Lanes 2/1 turning left...")
                 return -10
 
         return 17
