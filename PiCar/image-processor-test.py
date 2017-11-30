@@ -24,7 +24,7 @@ def start():
     	#time.sleep(3)
 
         #populate queue
-        imgs = Queue()
+        imgs = Queue.Queue()
         imgs.put(imgpr.get_image())
         imgs.put(imgpr.get_image())
         imgs.put(imgpr.get_image())
