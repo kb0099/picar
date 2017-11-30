@@ -36,14 +36,14 @@ def start():
     	    #pt.stop()
     	    #time.sleep(.05)
     	    print("\n\n")
-                adjustment = imgpr.check_status() * 1000
-                print("Adjustment: {0}".format(adjustment))
-                if adjustment == 17 * 1000 or adjustment == 0:
-                    print("Unexpected resolution of image processing method.\n")
-    		pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
-                else:
-                    pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
-    		lastAdj = adjustment
+            adjustment = imgpr.check_status() * 1000
+            print("Adjustment: {0}".format(adjustment))
+            if adjustment == 17 * 1000 or adjustment == 0:
+                print("Unexpected resolution of image processing method.\n")
+                pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
+            else:
+                pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
+    		    lastAdj = adjustment
     	    #time.sleep(.13)
 
 
