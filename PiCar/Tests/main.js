@@ -30,6 +30,7 @@ function loadDoc(key_code) {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
        document.getElementById("response").innerText = this.responseText;
+       console.log(JSON.parse(this.responseText));
       }
     };
     xhttp.open("GET", `cmd/${key_code}`, true);

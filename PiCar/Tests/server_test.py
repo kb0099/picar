@@ -6,17 +6,12 @@ import shutil
 import os, signal
 import mimetypes
 
+from shared_data import SharedData;
+
+import json
+
 # global
 httpd = None;
-
-CMD_FORWARD     = 38; # up ----- if pressed makes to go forward 
-CMD_BACKWARD    = 40; # down --- makes to go  in reverse
-CMD_LEFT        = 37; # left --- left turn
-CMD_RIGHT       = 39; # right -- right turn
-CMD_STOP        = 83; # s     -- sets speed to ZERO
-CMD_ACCELERATE  = 90; # z    --- increases speed
-CMD_DECELERATE  = 88; # x      --- decreases speed
-CMD_TERMINATE   = 84; # terminatese the whole server, emergency stop measure
 
 class S(BaseHTTPRequestHandler):
     allow_reuse_address = True
@@ -39,33 +34,20 @@ class S(BaseHTTPRequestHandler):
                 cmd = int(filepath[5:]);          # catches string after "/cmd/"  
                 output = None;
                 output = '{"result": "status"}';
-               
-                if(cmd == CMD_FORWARD):
-                    output = '{"result": "CMD_FORWARD"}';    # move forward , should do IPC or threading or what?
-                elif (cmd == CMD_BACKWARD):
-                    output = '{"result": "CMD_BACKWARD"}';
-                    pass;    
-                elif(cmd == CMD_ACCELERATE):
-                    output = '{"result": "CMD_ACCL"}';
-                    pass;  
-                elif(cmd == CMD_DECELERATE):
-                    output = '{"result": "CMD_DECL"}';
-                    pass;
-                elif(cmd == CMD_LEFT):
-                    output = '{"result": "CMD_LEFT"}';
-                    pass;
-                elif(cmd == CMD_RIGHT):
-                    output = '{"result": "CMD_RIGHT"}';
-                    pass;
-                elif (cmd == CMD_TERMINATE):
+                SharedData.command_list.put(cmd);
+
+                self._set_headers('application/json');
+
+                if (cmd == 84): # CMD_TERMINATE
+                    self.wfile.write('{"result": "closing..."}');
                     self.stopped = True;
-                    self.wfile.write("closing...");
-                    self.server_close()
+                    self.server.shutdown();
+                    self.socket.close()
+                    print ("server: closing...");
                     return;
                 
-                # is better to end the connection first?
-                self._set_headers('application/json');
-                self.wfile.write(output);
+                # is better to end the connection?
+                self.send_pi_status();
                 self.finish();
                 self.connection.close();
 
@@ -76,6 +58,9 @@ class S(BaseHTTPRequestHandler):
         except IOError:
             #self.send_error(404, "<html><body><h1>File not found %s </h1></body></html>" % filepath)
             self.send_file("404.html", 404)
+
+    def send_pi_status(self):        
+        self.wfile.write(json.dumps(SharedData.pi_status));
 
     def do_HEAD(self):
         self._set_headers()
@@ -100,7 +85,7 @@ class S(BaseHTTPRequestHandler):
         self.connection.close();
         
         
-def run(server_class=HTTPServer, handler_class=S, port=8282):
+def run_server(server_class=HTTPServer, handler_class=S, port=8001):
     global httpd;
     try:
         server_address = ('', port)
@@ -115,17 +100,14 @@ def run(server_class=HTTPServer, handler_class=S, port=8282):
         httpd.stopped = True;
         httpd.shutdown()
         httpd.socket.close()
-        httpd.server_close()
         print("\n\nclosed....\nSuccessfully!");
 
     #except:
     #    print "address already in use?"
 def handler_stop_signals(signum, frame):
     global httpd;
-    httpd.shutdown();
     httpd.stopped = True;
-    httpd.serve_forever();
-    httpd.server_close();
+    httpd.shutdown();
     print("\n\nclosed....\nSuccessfully!");
 
 if __name__ == "__main__":
@@ -135,8 +117,8 @@ if __name__ == "__main__":
     signal.signal(signal.SIGTERM, handler_stop_signals);
 
     if len(argv) == 2:
-        run(port=int(argv[1]))
+        run_server(port=int(argv[1]))
     else:
-        run()
+        run_server()
 
 # end
