@@ -199,7 +199,7 @@ class ImageProcessor:
         cv2.imwrite(save_string, thresh)
         cv2.imwrite(raw_save_string, img)
 
-	    print("Image saved to {0}".format(save_string))
+        print("Image saved to {0}".format(save_string))
         self.image_number += 1
 
         # Use the midpoints of detected lanes to tell the car if and how it needs to adjust
