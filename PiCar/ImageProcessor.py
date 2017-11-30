@@ -65,7 +65,7 @@ class ImageProcessor:
         bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # Process image using Binary Thresholding
         if self.lane_type:
-            ret,thresh = cv2.threshold(bw, 245, 255, cv2.THRESH_BINARY)
+            ret,thresh = cv2.threshold(bw, 250, 255, cv2.THRESH_BINARY)
         else:
             ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
         # Rows to check in an image for lane markings
@@ -120,6 +120,9 @@ class ImageProcessor:
                     high_row += (detection_midpoint_high,)
                     # Add size of detected lane to tuple
                     high_row_sizes += ((detection_end_high - detection_start_high),)
+            # Draw lines representing scanned areas on image output
+            thresh.itemset((low, i), 155)
+            thresh.itemset((high, j), 155)
 
         # Variables to store the number of lanes detected on each row
         low_row_len = len(low_row)
@@ -190,18 +193,19 @@ class ImageProcessor:
         print("\n")
 
         # Debug image output
-	save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
+        save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
+        raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
 
         cv2.imwrite(save_string, thresh)
-        cv2.imwrite('RAW_' + save_string, img)
+        cv2.imwrite(raw_save_string, img)
 
-	print("Image saved to {0}".format(save_string))
-	self.image_number += 1
+	    print("Image saved to {0}".format(save_string))
+        self.image_number += 1
 
         # Use the midpoints of detected lanes to tell the car if and how it needs to adjust
 
         # The distance from the expected midpoint to begin making slight adjustments
-        midpoint_threshold = 75
+        midpoint_threshold = 5
 
         # Unexpected Case: >2 lanes in either row [occurs due to error in parsing image (noise etc)]
         # Action taken: Fix image processing issue/hope next image is better
