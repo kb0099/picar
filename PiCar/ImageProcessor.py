@@ -69,8 +69,8 @@ class ImageProcessor:
         else:
             ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
         # Rows to check in an image for lane markings
-        low = 200
-        high = 140
+        low = 140 #200
+        high = 80 #140
 
         # Tuples to store the midpoints of detected lane markings (left to right)
         low_row = ()
@@ -122,7 +122,7 @@ class ImageProcessor:
                     high_row_sizes += ((detection_end_high - detection_start_high),)
             # Draw lines representing scanned areas on image output
             thresh.itemset((low, i), 155)
-            thresh.itemset((high, j), 155)
+            thresh.itemset((high, i), 155)
 
         # Variables to store the number of lanes detected on each row
         low_row_len = len(low_row)
