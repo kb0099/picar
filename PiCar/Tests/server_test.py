@@ -3,11 +3,20 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
 import shutil
 
-import os
+import os, signal
 import mimetypes
 
 # global
 httpd = None;
+
+CMD_FORWARD     = 38; # up ----- if pressed makes to go forward 
+CMD_BACKWARD    = 40; # down --- makes to go  in reverse
+CMD_LEFT        = 37; # left --- left turn
+CMD_RIGHT       = 39; # right -- right turn
+CMD_STOP        = 83; # s     -- sets speed to ZERO
+CMD_ACCELERATE  = 90; # z    --- increases speed
+CMD_DECELERATE  = 88; # x      --- decreases speed
+CMD_TERMINATE   = 84; # terminatese the whole server, emergency stop measure
 
 class S(BaseHTTPRequestHandler):
     allow_reuse_address = True
@@ -26,11 +35,37 @@ class S(BaseHTTPRequestHandler):
             if(filepath == "/"):  
                 self.send_file("index.html");
 
-            elif (filepath == "/cmd"):       
-                self._set_headers()
-                self.stopped = True;
-                self.wfile.write("closing...");
-                self.server_close()
+            elif (filepath.startswith("/cmd")):
+                cmd = int(filepath[5:]);          # catches string after "/cmd/"  
+                output = None;
+                output = '{"result": "status"}';
+
+               
+                if(cmd == CMD_FORWARD):
+                    output = '{"result": "CMD_FORWARD"}';    # move forward , should do IPC or threading or what?
+                elif (cmd == CMD_BACKWARD):
+                    output = '{"result": "CMD_BACKWARD"}';
+                    pass;    
+                elif(cmd == CMD_ACCELERATE):
+                    output = '{"result": "CMD_ACCL"}';
+                    pass;
+                elif(cmd == CMD_LEFT):
+                    output = '{"result": "CMD_LEFT"}';
+                    pass;
+                elif(cmd == CMD_RIGHT):
+                    output = '{"result": "CMD_RIGHT"}';
+                    pass;
+                elif (cmd == CMD_TERMINATE):
+                    self.stopped = True;
+                    self.wfile.write("closing...");
+                    self.server_close()
+                    return;
+                
+                # is better to end the connection first?
+                self._set_headers('application/json');
+                self.wfile.write(output);
+                self.finish();
+                self.connection.close();
 
             else:        
                 # skip the leading '/' from filepath
@@ -75,15 +110,26 @@ def run(server_class=HTTPServer, handler_class=S, port=8282):
 
     except KeyboardInterrupt:
         httpd.server_close()
+        #httpd.shutdown()
+        #httpd.socket.close()
         print("\n\nclosed....\nSuccessfully!");
 
     #except:
     #    print "address already in use?"
+def handler_stop_signals(signum, frame):
+    httpd.stopped = True;
+    httpd.server_close(); 
+    print("\n\nclosed....\nSuccessfully!");
 
 if __name__ == "__main__":
     from sys import argv
+
+    signal.signal(signal.SIGINT, handler_stop_signals);
+    signal.signal(signal.SIGTERM, handler_stop_signals);
 
     if len(argv) == 2:
         run(port=int(argv[1]))
     else:
         run()
+
+# end
