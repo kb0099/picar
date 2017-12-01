@@ -100,7 +100,7 @@ class Powertrain:
             right_forward (boolean, optional): Flag for the right motor to go
                 forward. Defaults to True.
         """
-        print("LDC: {0}, RDC: {1}".format(left_duty_cycle, right_duty_cycle))
+        #print("LDC: {0}, RDC: {1}".format(left_duty_cycle, right_duty_cycle))
         # if-else to use forward/backward
         if (left_forward):
             self.left.forward(left_duty_cycle)

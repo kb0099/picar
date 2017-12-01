@@ -12,16 +12,16 @@ pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
 def start():
     # self.image_processor.start();
     base_intensity = 0
-    base_duty_cycle = 33
+    left_duty_cycle = 25
+    right_duty_cycle = 45
     try:
-	
         #pt.turn_intensity(base_duty_cycle, base_intensity)
     	#time.sleep(2)
     	#pt.turn_intensity(base_duty_cycle, -80)
     	#time.sleep(3)
     	#pt.turn_intensity(base_duty_cycle, 80)
     	#time.sleep(3)
-        
+        time.sleep(5)
     	lastAdj = 0
         while(True):
     	    #pt.stop()
@@ -31,11 +31,18 @@ def start():
             #print("Adjustment: {0}".format(adjustment))
             if adjustment == 17 * 1000 or adjustment == 0:
                 #print("Unexpected resolution of image processing method.\n")
-                pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
+                #pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
+                adjustment = lastAdj
             else:
-                pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
+                #pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
                 lastAdj = adjustment
-    	    #time.sleep(.13)
+            if adjustment > 0:
+                print("LEFT WHEEL\n")
+                pt.turn_intensity(left_duty_cycle, (base_intensity + adjustment))
+            else:
+                pt.turn_intensity(right_duty_cycle, (base_intensity + adjustment))
+                print("RIGHT WHEEL\n")
+    	    #time.sleep(.05)
 
 
     except KeyboardInterrupt:

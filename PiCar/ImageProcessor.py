@@ -65,12 +65,12 @@ class ImageProcessor:
         bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # Process image using Binary Thresholding
         if self.lane_type:
-            ret,thresh = cv2.threshold(bw, 250, 255, cv2.THRESH_BINARY)
+            ret,thresh = cv2.threshold(bw, 220, 255, cv2.THRESH_BINARY)
         else:
             ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
         # Rows to check in an image for lane markings
-        low = 140 #200
-        high = 80 #140
+        low = 280 #200
+        high = 220 #140
 
         # Tuples to store the midpoints of detected lane markings (left to right)
         low_row = ()
@@ -195,14 +195,14 @@ class ImageProcessor:
         # print("\n")
 
         # # Debug image output
-        # save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
+        #save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
         # raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
 
-        # cv2.imwrite(save_string, thresh)
+        #cv2.imwrite(save_string, thresh)
         # cv2.imwrite(raw_save_string, img)
 
         # print("Image saved to {0}".format(save_string))
-        # self.image_number += 1
+        #self.image_number += 1
 
 
 
