@@ -25,19 +25,18 @@ from powertrain import Powertrain;
 def acclerate(self, increment):
     # left motor
     new_dc = SharedData.pi_status['left_motor_dc'] + increment;
-    self.left.pwm.changeDutyCycle(new_dc); 
+    self.left.pwm.ChangeDutyCycle(new_dc); 
 
     # right motor
     new_dc = SharedData.pi_status['right_motor_dc'] + increment;
-    self.right.pwm.changeDutyCycle(new_dc);
-
+    self.right.pwm.ChangeDutyCycle(new_dc);
 
 class SmartCar:
     def __init__(self,
-        camera_port_num,
-        left_fp, left_bp, left_en,
-        right_fp, right_bp, right_en,
-        front_trigger, front_echo, front_distance_threshold):
+        camera_port_num = 1,
+        left_fp = LFP, left_bp = LBP, left_en = LEP,
+        right_fp = RFP, right_bp = RBP, right_en = REP,
+        front_trigger= FTP, front_echo = FEP, front_distance_threshold=10):
 
         self.power_train         = Powertrain(left_fp, left_bp, left_en, right_fp, right_bp, right_en);
         #self.obstacle_detector  = ObstacleDetector(front_trigger, frot_echo, front_threshold);
@@ -45,21 +44,38 @@ class SmartCar:
 
     # incr_factor = 1 for accelerate, and -1 for decelerate
     def accelerate(self, incr_factor = 1):
-        if (SharedData.pi_status['motor_stopped']):
+        new_dc = 0;
+        if (SharedData.pi_status['motors_stopped'] == True and incr_factor == 1):
             #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
-            self.power_train.left.pwm.changeDutyCycle(SharedData.pi_status['default_duty_cycle']); 
-            self.power_train.right.pwm.changeDutyCycle(SharedData.pi_status['default_duty_cycle']); 
+            new_dc = SharedData.pi_status['default_duty_cycle'];
+            print "changing dc to: ", new_dc;            
+            self.power_train.left.pwm.ChangeDutyCycle(SharedData.pi_status['default_duty_cycle']);
+            self.power_train.right.pwm.ChangeDutyCycle(SharedData.pi_status['default_duty_cycle']);            
+            SharedData.pi_status['motors_stopped'] = False;  
         else:
             #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
+            print "factor is ", incr_factor * SharedData.pi_status['dc_delta'];
             new_dc = SharedData.pi_status['left_motor_dc'] + incr_factor * SharedData.pi_status['dc_delta'];
             if(new_dc < 10):
+                print "stopping....."; 
                 self.stop();
+                SharedData.pi_status['motors_stopped'] = True;  
+                new_dc = 0;
             else:            
-                self.power_train.left.pwm.changeDutyCycle(new_dc);
-                self.power_train.right.pwm.changeDutyCycle(new_dc); 
+                print "changing dc to: ", new_dc;
+                self.power_train.left.pwm.ChangeDutyCycle(new_dc);
+                self.power_train.right.pwm.ChangeDutyCycle(new_dc);   
+        # update at last
+        # update global
+        print ("setting left and right motor to", new_dc)
+        SharedData.pi_status['left_motor_dc']   = new_dc;
+        SharedData.pi_status['right_motor_dc']  = new_dc;
 
     # change backward or forward : changes direction and stops
     def set_forward_direction(self, forward=True):
+        self.power_train.left.change_dir(forward);
+        self.power_train.right.change_dir(forward);
+
         SharedData.pi_status['direction']               = 0;
         if(SharedData.pi_status['headed_forward']       != forward):
             SharedData.pi_status['headed_forward']      = forward;
@@ -70,9 +86,13 @@ class SmartCar:
 
     # let it stop on its own
     def stop(self):
+        print ("stopping? ..");
+        SharedData.pi_status['left_motor_dc']   = 0;
+        SharedData.pi_status['right_motor_dc']  = 0;
         self.power_train.stop();
 
     def cleanup(self):
+        print ("C => Cleaning up!")
         self.power_train.cleanup();
 
     def handle_cmd(self, cmd):
@@ -84,20 +104,22 @@ class SmartCar:
             pass;    
 
         elif(cmd == CMD_ACCELERATE):
-            self.acclerate();
+            print "Accelerating...";
+            self.accelerate();
 
         elif(cmd == CMD_DECELERATE):
+            print "decelerating...";
             self.accelerate(-1);
 
         elif(cmd == CMD_LEFT):
-            SharedData.pi_status['direction']           -= direction_delta;
+            SharedData.pi_status['direction']           -= SharedData.pi_status['direction_delta'] ;
             pass;
 
         elif(cmd == CMD_RIGHT):
-            SharedData.pi_status['direction']           += direction_delta;
+            SharedData.pi_status['direction']           += SharedData.pi_status['direction_delta'] ;
             pass;
 
-        elif (cmd == CMD_STOP):
+        elif (cmd == CMD_STOP): # motors
             self.stop();
 
         elif (cmd == CMD_CLEANUP):
@@ -127,18 +149,26 @@ if __name__ == "__main__":
     t1 = threading.Thread(target=server_test.run_server);
     t1.start();
     
-    while True:
-        # 0. Check for server commands
-        # if cmd, execute them
-        #   0.1. Check for obstacles
-        #       if obstacles, pause
-        # 1. If no server commands, do image processing()
-        #   1.1 check, obstacles, stops and run
-        #   
-        if not SharedData.command_list.empty():
-            print "the master: ", SharedData.command_list.get();
-        
-        # for test:
-        SharedData.pi_status['od_back_distance'] = random.randint(2, 50);
+    try:
+        while True:
+            # 0. Check for server commands
+            # if cmd, execute them
+            #   0.1. Check for obstacles
+            #       if obstacles, pause
+            # 1. If no server commands, do image processing()
+            #   1.1 check, obstacles, stops and run
+            #   
+            if not SharedData.command_list.empty():
+                cmd = SharedData.command_list.get();
+                print "the master: ", cmd;
+                smart_car.handle_cmd(cmd);
+                print "handled?";
+            
+            # for test:
+            SharedData.pi_status['od_back_distance'] = random.randint(2, 50);
+    except KeyboardInterrupt:
+        smart_car.cleanup();
+
+
 
 

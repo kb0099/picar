@@ -85,7 +85,7 @@ class S(BaseHTTPRequestHandler):
         self.connection.close();
         
         
-def run_server(server_class=HTTPServer, handler_class=S, port=8001):
+def run_server(server_class=HTTPServer, handler_class=S, port=8002):
     global httpd;
     try:
         server_address = ('', port)

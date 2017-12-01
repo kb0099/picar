@@ -29,8 +29,8 @@ function loadDoc(key_code) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-       document.getElementById("response").innerText = this.responseText;
-       console.log(JSON.parse(this.responseText));
+        let jsn = JSON.stringify(JSON.parse(this.responseText), null, 3);  
+        document.getElementById("response").innerHTML = `<pre>${jsn}</pre>`;
       }
     };
     xhttp.open("GET", `cmd/${key_code}`, true);
