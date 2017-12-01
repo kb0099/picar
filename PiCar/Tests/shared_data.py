@@ -9,6 +9,7 @@ class SharedData:
     pi_status =  {
         # whether stopped
         'default_duty_cycle'            : 15,
+        'current_duty_cycle'            : 0,       # powertrain duty cycle or max duty-cycle
         'motors_stopped'                : True,
         'dc_delta'                      : 5,       # duty cycle increment
 
@@ -17,12 +18,12 @@ class SharedData:
         'direction_delta'               : 0.1,     # left/right change value
 
         # left_motor
-        'left_motor_dc'                 : 0,
-        'left_motor_dc_adjustment'      : 0,
+        'left_motor_dc'                 : 0,       # without adjustent
+        'left_motor_dc_adjustment'      : 1,       # factor
 
         # right_motor
-        'right_motor_dc'                : 0,
-        'right_motor_dc_adjustment'     : 0,
+        'right_motor_dc'                : 0,       # without adjustment
+        'right_motor_dc_adjustment'     : 0.8,
 
         # "od" stands for object detector
         'od_front_distance'             : 0,

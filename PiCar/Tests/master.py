@@ -13,9 +13,8 @@ from car_config import *;
 from powertrain import Powertrain;
 
 
-
 '''TODO:
-    0. test controller by connecting to motors
+    0. test controller by connecting to motors                  x
     1. implement adjustment functions if necessary
     2. integrate everything together
 '''
@@ -49,8 +48,8 @@ class SmartCar:
             #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
             new_dc = SharedData.pi_status['default_duty_cycle'];
             print "changing dc to: ", new_dc;            
-            self.power_train.left.pwm.ChangeDutyCycle(SharedData.pi_status['default_duty_cycle']);
-            self.power_train.right.pwm.ChangeDutyCycle(SharedData.pi_status['default_duty_cycle']);            
+            self.power_train.left.pwm.ChangeDutyCycle(new_dc);
+            self.power_train.right.pwm.ChangeDutyCycle(new_dc);
             SharedData.pi_status['motors_stopped'] = False;  
         else:
             #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
@@ -137,7 +136,6 @@ class SmartCar:
             return;
 
 
-
 # global smart_car object
 smart_car = SmartCar();
 
@@ -168,7 +166,5 @@ if __name__ == "__main__":
             SharedData.pi_status['od_back_distance'] = random.randint(2, 50);
     except KeyboardInterrupt:
         smart_car.cleanup();
-
-
 
 
