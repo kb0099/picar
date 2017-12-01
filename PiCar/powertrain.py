@@ -184,14 +184,14 @@ class Powertrain:
         Turns the right wheel at the provided duty cycle while the left wheel remains motionless.
         """
         self.right.forward(duty_cycle=duty_cycle)
-        self.left.off()
+        self.left.backward(25)
 
     def left_wheel(self, duty_cycle):
         """
         Turns the right wheel at the provided duty cycle while the left wheel remains motionless.
         """
         self.left.forward(duty_cycle=duty_cycle)
-        self.right.off()
+        self.right.backward(25)
 
     def stop(self):
         """Stop the motors.

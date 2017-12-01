@@ -12,8 +12,8 @@ pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
 def start():
     # self.image_processor.start();
     base_intensity = 0
-    left_duty_cycle = 25
-    right_duty_cycle = 45
+    left_duty_cycle = 30
+    right_duty_cycle = 30
     try:
         #pt.turn_intensity(base_duty_cycle, base_intensity)
     	#time.sleep(2)
@@ -21,7 +21,7 @@ def start():
     	#time.sleep(3)
     	#pt.turn_intensity(base_duty_cycle, 80)
     	#time.sleep(3)
-        time.sleep(5)
+        #time.sleep(5)
     	lastAdj = 0
         while(True):
     	    #pt.stop()
