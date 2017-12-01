@@ -37,11 +37,11 @@ def start():
                 #pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
                 lastAdj = adjustment
             if adjustment > 0:
-                pt.left_wheel(left_duty_cycle)
-                #pt.turn_intensity(left_duty_cycle, (base_intensity + adjustment))
+                #pt.left_wheel(left_duty_cycle)
+                pt.turn_intensity(left_duty_cycle, (base_intensity + adjustment))
             else:
-                pt.right_wheel(right_duty_cycle)
-                #pt.turn_intensity(right_duty_cycle, (base_intensity + adjustment))
+                #pt.right_wheel(right_duty_cycle)
+                pt.turn_intensity(right_duty_cycle, (base_intensity + adjustment))
     	    #time.sleep(.05)
 
 
