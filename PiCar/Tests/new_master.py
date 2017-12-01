@@ -137,6 +137,16 @@ class SmartCar:
         elif (cmd == CMD_CLEANUP):
             self.cleanup();
 
+        elif (cmd == CMD_CAL_LEFT):
+            # if car goes more towards right
+            #  we need to pull it left means decrease speed of right motor.
+            if (SharedData.pi_status['right_motor_dc_adjustment'] > 0.1):
+                SharedData.pi_status['right_motor_dc_adjustment'] -= 0.1;
+
+        elif (cmd == CMD_CAL_RIGHT):
+            if (SharedData.pi_status['left_motor_dc_adjustment'] > 0.1):
+                SharedData.pi_status['left_motor_dc_adjustment'] -= 0.1;
+
         elif (cmd == CMD_TERMINATE):
             '''
             self.wfile.write("closing...");
