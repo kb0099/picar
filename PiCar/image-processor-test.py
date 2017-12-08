@@ -1,6 +1,7 @@
 #!python2
 from ImageProcessor import ImageProcessor
 from powertrain import Powertrain
+from Ultrasonic import Ultrasonic
 from car_config import *
 import time
 import RPi.GPIO as GPIO
@@ -8,6 +9,7 @@ import RPi.GPIO as GPIO
 imgpr = ImageProcessor(0, 1)
 imgpr.init_camera()
 pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
+sensor = Ultrasonic()
 
 def start():
     # self.image_processor.start();
@@ -15,6 +17,11 @@ def start():
     left_duty_cycle = 35
     right_duty_cycle = 45
     try:
+        while(True):
+            distance = sensor.distance()
+            print("Distance: {0}".format(distance))
+            time.sleep(.5)
+
     	lastDir = 1
         while(True):
             # Direction: -1 = left, 1 = right, 0 = no change
