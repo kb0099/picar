@@ -2,7 +2,7 @@ import server_test;
 from shared_data import SharedData;
 import threading, random;
 
-from ServerConstants import *;
+from ServerConstants import *; 
 
 # SmartCar
 import sys;
@@ -44,31 +44,44 @@ class SmartCar:
     # incr_factor = 1 for accelerate, and -1 for decelerate
     def accelerate(self, incr_factor = 1):
         new_dc = 0;
+        new_dc_left = 0;        # without the adjustment
+        new_dc_right = 0;       # without the adjustment
         if (SharedData.pi_status['motors_stopped'] == True and incr_factor == 1):
             #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
             new_dc = SharedData.pi_status['default_duty_cycle'];
-            print "changing dc to: ", new_dc;            
-            self.power_train.left.pwm.ChangeDutyCycle(new_dc);
-            self.power_train.right.pwm.ChangeDutyCycle(new_dc);
-            SharedData.pi_status['motors_stopped'] = False;  
+            print "changing dc to: ", new_dc;
+            new_dc_left     = new_dc; # *SharedData.pi_status['left_motor_dc_adjustment'];
+            new_dc_right    = new_dc; #*SharedData.pi_status['right_motor_dc_adjustment'];
+            SharedData.pi_status['motors_stopped'] = False;
         else:
             #self.power_train.accelerate(SharedData.pi_status['default_duty_cycle']);
             print "factor is ", incr_factor * SharedData.pi_status['dc_delta'];
-            new_dc = SharedData.pi_status['left_motor_dc'] + incr_factor * SharedData.pi_status['dc_delta'];
-            if(new_dc < 10):
-                print "stopping....."; 
+            new_dc_left = SharedData.pi_status['left_motor_dc'] + incr_factor * SharedData.pi_status['dc_delta'];
+            new_dc_right = SharedData.pi_status['left_motor_dc'] + incr_factor * SharedData.pi_status['dc_delta'];
+            if(new_dc_left < 10 and new_dc_right < 10):
+                print "stopping left .....";
                 self.stop();
-                SharedData.pi_status['motors_stopped'] = True;  
-                new_dc = 0;
-            else:            
-                print "changing dc to: ", new_dc;
-                self.power_train.left.pwm.ChangeDutyCycle(new_dc);
-                self.power_train.right.pwm.ChangeDutyCycle(new_dc);   
+                SharedData.pi_status['motors_stopped'] = True;
+                new_dc_left = 0;        # without the adjustment
+                new_dc_right = 0;       # without the adjustment
+            else:
+                new_dc_left = 0 if new_dc_left < 10 else new_dc_left;
+                new_dc_right = 0 if new_dc_right < 10 else new_dc_right;
+
         # update at last
         # update global
-        print ("setting left and right motor to", new_dc)
-        SharedData.pi_status['left_motor_dc']   = new_dc;
-        SharedData.pi_status['right_motor_dc']  = new_dc;
+        # use un-adjusted original values!
+        SharedData.pi_status['left_motor_dc']       = new_dc_left;               
+        SharedData.pi_status['right_motor_dc']      = new_dc_right;   
+
+        # adjust now!     
+        new_dc_left = new_dc_left   * SharedData.pi_status['left_motor_dc_adjustment'];
+        new_dc_right = new_dc_right * SharedData.pi_status['right_motor_dc_adjustment'];
+
+        print "changing dc to: ", (new_dc_left, new_dc_right);
+
+        self.power_train.left.pwm.ChangeDutyCycle(new_dc_left);         
+        self.power_train.right.pwm.ChangeDutyCycle(new_dc_right);        
 
     # change backward or forward : changes direction and stops
     def set_forward_direction(self, forward=True):
@@ -123,6 +136,16 @@ class SmartCar:
 
         elif (cmd == CMD_CLEANUP):
             self.cleanup();
+
+        elif (cmd == CMD_CAL_LEFT):
+            # if car goes more towards right
+            #  we need to pull it left means decrease speed of right motor.
+            if (SharedData.pi_status['right_motor_dc_adjustment'] > 0.1):
+                SharedData.pi_status['right_motor_dc_adjustment'] -= 0.1;
+
+        elif (cmd == CMD_CAL_RIGHT):
+            if (SharedData.pi_status['left_motor_dc_adjustment'] > 0.1):
+                SharedData.pi_status['left_motor_dc_adjustment'] -= 0.1;
 
         elif (cmd == CMD_TERMINATE):
             '''

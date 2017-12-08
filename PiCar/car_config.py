@@ -7,6 +7,21 @@ LFP = 14;
 '''LEFT_BACKWARD_PIN'''
 LBP = 15;
 
+#
+# Ex
+#
+# EX_DIRECTION_PWM        = 18; #
+# EX_DIRECTION_LEFT       = 14;
+# EX_DIRECTION_RIGHT      = 15;
+
+EX_DIRECTION_PWM        = 13; #
+EX_DIRECTION_LEFT       = 26;
+EX_DIRECTION_RIGHT      = 19;
+
+EX_SPEED_PWM            = 18;
+EX_SPEED_FORWARD        = 14;
+EX_SPEED_BACKWARD       = 15;
+
 
 '''RIGHT_ENABLE_PIN'''
 REP = 13;

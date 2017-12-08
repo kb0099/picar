@@ -2,7 +2,7 @@
 """
 
 # Imports
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO 
 
 # Set GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM);
@@ -31,6 +31,9 @@ class Motor:
 
         self.pwm.start(0.0)
 
+        # initial direction forward
+        self.change_dir(True);
+
     def forward(self, duty_cycle=100.0):
         """Drive the motor forward.
 
@@ -56,15 +59,15 @@ class Motor:
     def brake(self):
         """Lock the motor to act as brake.
         """
-        GPIO.output(self.frwd_p, True)
-        GPIO.output(self.bkwd_p, True)
+        #GPIO.output(self.frwd_p, True)
+        #GPIO.output(self.bkwd_p, True)
         self.pwm.ChangeDutyCycle(100.0)
 
     def off(self):
         """Disable power to motor to coast.
         """
-        GPIO.output(self.frwd_p, False)
-        GPIO.output(self.bkwd_p, False)
+        #GPIO.output(self.frwd_p, False)
+        #GPIO.output(self.bkwd_p, False)
         self.pwm.ChangeDutyCycle(0.0)
 
     def cleanup(self):
@@ -75,3 +78,8 @@ class Motor:
         """
         self.pwm.stop();
         GPIO.cleanup( [self.frwd_p, self.bkwd_p, self.enbl_p] )
+
+    def change_dir(self, forward=True):
+        GPIO.output(self.frwd_p, forward)
+        GPIO.output(self.bkwd_p, not forward)
+
