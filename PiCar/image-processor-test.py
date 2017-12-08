@@ -12,8 +12,8 @@ pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
 def start():
     # self.image_processor.start();
     base_intensity = 0
-    left_duty_cycle = 30
-    right_duty_cycle = 30
+    left_duty_cycle = 35
+    right_duty_cycle = 35
     try:
         #pt.turn_intensity(base_duty_cycle, base_intensity)
     	#time.sleep(2)
@@ -25,7 +25,7 @@ def start():
     	lastAdj = 0
         while(True):
     	    #pt.stop()
-    	    #time.sleep(.05)
+    	    #time.sleep(.1)
     	    #print("\n\n")
             adjustment = imgpr.check_status() * 1000
             #print("Adjustment: {0}".format(adjustment))
@@ -42,7 +42,7 @@ def start():
             else:
                 #pt.right_wheel(right_duty_cycle)
                 pt.turn_intensity(right_duty_cycle, (base_intensity + adjustment))
-    	    #time.sleep(.05)
+    	    #time.sleep(.1)
 
 
     except KeyboardInterrupt:

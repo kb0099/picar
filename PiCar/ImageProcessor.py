@@ -40,7 +40,7 @@ class ImageProcessor:
         Skips a number of frames to allow the webcam to adjust light levels etc.
         '''
         for i in xrange(30):
-            temp = self.get_image()
+            temp = self.camera.read()
 
     def set_lane_type(self, lane_t):
         '''
@@ -195,14 +195,14 @@ class ImageProcessor:
         # print("\n")
 
         # # Debug image output
-        #save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
-        # raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
+        save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
+        raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
 
-        #cv2.imwrite(save_string, thresh)
-        # cv2.imwrite(raw_save_string, img)
+        cv2.imwrite(save_string, thresh)
+        cv2.imwrite(raw_save_string, img)
 
         # print("Image saved to {0}".format(save_string))
-        #self.image_number += 1
+        self.image_number += 1
 
 
 
