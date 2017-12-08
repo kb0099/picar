@@ -15,34 +15,69 @@ def start():
     left_duty_cycle = 35
     right_duty_cycle = 35
     try:
-        #pt.turn_intensity(base_duty_cycle, base_intensity)
-    	#time.sleep(2)
-    	#pt.turn_intensity(base_duty_cycle, -80)
-    	#time.sleep(3)
-    	#pt.turn_intensity(base_duty_cycle, 80)
-    	#time.sleep(3)
-        #time.sleep(5)
-    	lastAdj = 0
+    	lastDir = 0
         while(True):
-    	    #pt.stop()
-    	    #time.sleep(.1)
-    	    #print("\n\n")
-            adjustment = imgpr.check_status() * 1000
+            # Direction: -1 = left, 1 = right, 0 = no change
+            direction = imgpr.check_status()
+            if direction == -1:
+                # Turn left
+                pt.turn_intensity(right_duty_cycle, -100)
+                lastDir = -1
+            elif direction == 1:
+                # Turn right
+                pt.turn_intensity(left_duty_cycle, 100)
+                lastDir = 1
+            elif direction == 0:
+                if lastDir == -1:
+                    # Turn Left
+                    pt.turn_intensity(right_duty_cycle, -100)
+                elif lastDir == 1:
+                    # Turn Right
+                    pt.turn_intensity(left_duty_cycle, 100)
+            # Switch Directions
+            elif direction == 2:
+                if lastDir == -1:
+                    # Turn Right
+                    pt.turn_intensity(left_duty_cycle, 100)
+                    lastDir = 1
+                elif lastDir == 1:
+                    # Turn Left
+                    pt.turn_intensity(right_duty_cycle, -100)
+                    lastDir = -1
+            # Recovery
+            elif direction == 3:
+                # Reverse Direction
+                if lastDir == -1:
+                    # Turn Right
+                    pt.turn_intensity(left_duty_cycle, 100)
+                elif lastDir == 1:
+                    # Turn Left
+                    pt.turn_intensity(right_duty_cycle, -100)
+                # Call recovery function
+                # Runs until 2 lanes are visible again.
+                lastDir = imgpr.recovery()
+
+
+
+
+
+
+
             #print("Adjustment: {0}".format(adjustment))
-            if adjustment == 17 * 1000 or adjustment == 0:
-                #print("Unexpected resolution of image processing method.\n")
-                #pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
-                adjustment = lastAdj
-            else:
-                #pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
-                lastAdj = adjustment
-            if adjustment > 0:
-                #pt.left_wheel(left_duty_cycle)
-                pt.turn_intensity(left_duty_cycle, (base_intensity + adjustment))
-            else:
-                #pt.right_wheel(right_duty_cycle)
-                pt.turn_intensity(right_duty_cycle, (base_intensity + adjustment))
-    	    #time.sleep(.1)
+         #    if adjustment == 17 * 1000 or adjustment == 0:
+         #        #print("Unexpected resolution of image processing method.\n")
+         #        #pt.turn_intensity(base_duty_cycle, (base_intensity + lastAdj))
+         #        adjustment = lastAdj
+         #    else:
+         #        #pt.turn_intensity(base_duty_cycle, (base_intensity + adjustment))
+         #        lastAdj = adjustment
+         #    if adjustment > 0:
+         #        #pt.left_wheel(left_duty_cycle)
+         #        pt.turn_intensity(left_duty_cycle, (base_intensity + adjustment))
+         #    else:
+         #        #pt.right_wheel(right_duty_cycle)
+         #        pt.turn_intensity(right_duty_cycle, (base_intensity + adjustment))
+    	    # #time.sleep(.1)
 
 
     except KeyboardInterrupt:
