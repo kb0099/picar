@@ -26,7 +26,7 @@ class ImageProcessor:
         # string for debugging image output
         self.init_time = datetime.datetime.now().isoformat()
         self.image_number = 0
-        self.save_images = 0
+        self.save_images = 1
         pass;
 
     def get_image(self):
@@ -252,7 +252,7 @@ class ImageProcessor:
         Accomplishes this by reversing the last direction the car traveled until 2 lanes are visible.
         '''
         # Return once two lanes are detected
-        while(true):
+        while(True):
             status = self.check_status()
             if status == 1 or status == -1:
                 return status

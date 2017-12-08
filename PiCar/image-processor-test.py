@@ -13,12 +13,13 @@ def start():
     # self.image_processor.start();
     base_intensity = 0
     left_duty_cycle = 35
-    right_duty_cycle = 35
+    right_duty_cycle = 45
     try:
-    	lastDir = 0
+    	lastDir = 1
         while(True):
             # Direction: -1 = left, 1 = right, 0 = no change
             direction = imgpr.check_status()
+            #print(direction)
             if direction == -1:
                 # Turn left
                 pt.turn_intensity(right_duty_cycle, -100)
@@ -44,6 +45,7 @@ def start():
                     # Turn Left
                     pt.turn_intensity(right_duty_cycle, -100)
                     lastDir = -1
+                imgpr.recovery()
             # Recovery
             elif direction == 3:
                 # Reverse Direction
