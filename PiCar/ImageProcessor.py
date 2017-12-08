@@ -68,7 +68,7 @@ class ImageProcessor:
         if self.lane_type:
             ret,thresh = cv2.threshold(bw, 220, 255, cv2.THRESH_BINARY)
         else:
-            ret,thresh = cv2.threshold(bw, 120, 255, cv2.THRESH_BINARY_INV)
+            ret,thresh = cv2.threshold(bw, 140, 255, cv2.THRESH_BINARY_INV)
         # Rows to check in an image for lane markings
         low = 280 #200
         high = 220 #140
@@ -247,7 +247,7 @@ class ImageProcessor:
 
         return 0
 
-    def recovery(self):
+    def recovery(self, sensor, pt):
         '''
         Called when no lanes are detected by the camera.
         Attempts to get the vehicle back on track using the direction traveled when lanes were lost.
@@ -255,6 +255,10 @@ class ImageProcessor:
         '''
         # Return once two lanes are detected
         while(True):
+            distance = sensor.distance()
+            if distance < 20:
+                pt.stop()
+                continue
             status = self.check_status()
             if status == 1 or status == -1:
                 return status

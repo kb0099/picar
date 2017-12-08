@@ -14,16 +14,16 @@ sensor = Ultrasonic()
 def start():
     # self.image_processor.start();
     base_intensity = 0
-    left_duty_cycle = 35
-    right_duty_cycle = 35
+    left_duty_cycle = 45
+    right_duty_cycle = 45
     try:
-        while(True):
-            distance = sensor.distance()
-            print("Distance: {0}".format(distance))
-            time.sleep(.5)
-
     	lastDir = 1
         while(True):
+            distance = sensor.distance()
+            if distance < 20:
+                pt.stop()
+                #print(distance)
+                continue
             #pt.stop()
             #time.sleep(.1)
             # Direction: -1 = left, 1 = right, 0 = no change
@@ -54,7 +54,7 @@ def start():
                     # Turn Left
                     pt.turn_intensity(right_duty_cycle, -100)
                     lastDir = -1
-                imgpr.recovery()
+                imgpr.recovery(sensor, pt)
             # Recovery
             elif direction == 3:
                 # Reverse Direction
@@ -66,7 +66,7 @@ def start():
                     pt.turn_intensity(right_duty_cycle, -100)
                 # Call recovery function
                 # Runs until 2 lanes are visible again.
-                lastDir = imgpr.recovery()
+                lastDir = imgpr.recovery(sensor, pt)
             #time.sleep(.13)
 
 
