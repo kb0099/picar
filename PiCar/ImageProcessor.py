@@ -26,7 +26,7 @@ class ImageProcessor:
         # string for debugging image output
         self.init_time = datetime.datetime.now().isoformat()
         self.image_number = 0
-        self.save_images = 1
+        self.save_images = 0
         pass;
 
     def get_image(self):
@@ -68,7 +68,7 @@ class ImageProcessor:
         if self.lane_type:
             ret,thresh = cv2.threshold(bw, 220, 255, cv2.THRESH_BINARY)
         else:
-            ret,thresh = cv2.threshold(bw, 100, 255, cv2.THRESH_BINARY_INV)
+            ret,thresh = cv2.threshold(bw, 120, 255, cv2.THRESH_BINARY_INV)
         # Rows to check in an image for lane markings
         low = 280 #200
         high = 220 #140
@@ -131,8 +131,8 @@ class ImageProcessor:
 
         if self.save_images == 1:
             # # Debug image output
-            save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + '.jpg'
-            raw_save_string = '../../../images/' + self.init_time + '-' + str(self.image_number) + 'RAW' + '.jpg'
+            save_string = '../../../images/' + datetime.datetime.now().isoformat() + '.jpg'
+            raw_save_string = '../../../images/' + datetime.datetime.now().isoformat() + '-RAW' + '.jpg'
 
             cv2.imwrite(save_string, thresh)
             cv2.imwrite(raw_save_string, img)
@@ -175,11 +175,11 @@ class ImageProcessor:
                 if (image_midpoint - lower_midpoint) > 0:
                     # Turn right
                     #print("Mild adjustment right...")
-                    return 1
+                    return -1
                 else:
                     # Turn Left
                     #print("Mild adjustment left...")
-                    return -1
+                    return 1
             else:
                 #print("Lane positioning is good!")
                 return 0
