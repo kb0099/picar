@@ -5,7 +5,7 @@ from car_config import *
 import time
 import RPi.GPIO as GPIO
 
-imgpr = ImageProcessor(0, 1)
+imgpr = ImageProcessor(0, 0)
 imgpr.init_camera()
 pt = Powertrain(LFP, LBP, LEP, RFP, RBP, REP)
 
@@ -13,10 +13,12 @@ def start():
     # self.image_processor.start();
     base_intensity = 0
     left_duty_cycle = 35
-    right_duty_cycle = 45
+    right_duty_cycle = 35
     try:
     	lastDir = 1
         while(True):
+            #pt.stop()
+            #time.sleep(.1)
             # Direction: -1 = left, 1 = right, 0 = no change
             direction = imgpr.check_status()
             #print(direction)
@@ -49,15 +51,16 @@ def start():
             # Recovery
             elif direction == 3:
                 # Reverse Direction
-                if lastDir == -1:
+                if lastDir == 1:
                     # Turn Right
                     pt.turn_intensity(left_duty_cycle, 100)
-                elif lastDir == 1:
+                elif lastDir == -1:
                     # Turn Left
                     pt.turn_intensity(right_duty_cycle, -100)
                 # Call recovery function
                 # Runs until 2 lanes are visible again.
                 lastDir = imgpr.recovery()
+            #time.sleep(.13)
 
 
 
