@@ -188,14 +188,16 @@ class ImageProcessor:
         # Expected Case: 1 lane detected in each row (car is veering to one side)
         # Action taken: Reverse direction car is currently traveling
         if low_row_len == 1 and high_row_len == 1:
+            # Use midpoint of image to determine which direction to turn.
+            image_midpoint = columns / 2
             # Left hand lane detected [from inside lane area]
-            if low_row[0] < high_row[0]:
+            if low_row[0] >= image_midpoint:
                 #print("Single Lane turning right...")
-                return 2
+                return 1
             # Right hand lane detected [from inside lane area]
-            elif low_row[0] > high_row[0]:
+            else:
                 #print("Single Lane turning left...")
-                return 2
+                return -1
 
 	# Unexpected Case: Only 1 lane detected in upper or lower regions combined [most likely found in lower region].
         # This should occur when the vehicle is veering out of the lanes and requires a large change in duty cycle.
