@@ -1,11 +1,11 @@
 #! /bin/bash
 
-rmate server_test.py
+rmate ex_server.py
+rmate ex_shared_data.py
 rmate pt.py
 rmate index.html
 rmate main.js
 rmate rmate.bash
-rmate master.py
-rmate shared_data.py
-rmate new_master.py
+rmate ex.py
+rmate ex_master.py
 
