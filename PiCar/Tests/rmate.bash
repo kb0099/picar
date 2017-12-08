@@ -7,4 +7,5 @@ rmate main.js
 rmate rmate.bash
 rmate master.py
 rmate shared_data.py
+rmate new_master.py
 

@@ -2,7 +2,7 @@ import server_test;
 from shared_data import SharedData;
 import threading, random;
 
-from ServerConstants import *;
+from ServerConstants import *; 
 
 # SmartCar
 import sys;
@@ -80,8 +80,8 @@ class SmartCar:
 
         print "changing dc to: ", (new_dc_left, new_dc_right);
 
-        self.power_train.left.pwm.ChangeDutyCycle();         
-        self.power_train.right.pwm.ChangeDutyCycle(ne);        
+        self.power_train.left.pwm.ChangeDutyCycle(new_dc_left);         
+        self.power_train.right.pwm.ChangeDutyCycle(new_dc_right);        
 
     # change backward or forward : changes direction and stops
     def set_forward_direction(self, forward=True):

@@ -23,10 +23,10 @@ class SharedData:
 
         # right_motor
         'right_motor_dc'                : 0,       # without adjustment
-        'right_motor_dc_adjustment'     : 0.8,
+        'right_motor_dc_adjustment'     : 1,
 
         # "od" stands for object detector
-        'od_front_distance'             : 0,
+        'od_front_distance'             : 0, 
         'od_back_distance'              : 0,
 
         # image processor

@@ -5,178 +5,10 @@ import time;
 
 sys.path.append('..');
 from car_config import *;
-
-
-
-# ==================================================== temp
-
-"""DirMotor class represents direction [-1, 1]
-"""
-
-# Imports
-import RPi.GPIO as GPIO 
-
-# Set GPIO Mode (BOARD / BCM)
-GPIO.setmode(GPIO.BCM);
-
-class DirMotor:
-    """Represents a single motor. Speed is set through PWM.
-    """
-
-    def __init__(self, left, right, enable_pin):
-        """Constructor.
-
-        Args:
-            forward_pin (int): GPIO pin connected to motor's forward pin.
-            backward_pin (int): GPIO pin connected to motor's backward pin.
-            enable_pin (int): GPIO pin connected to motor's enable pin
-        """
-        # store pins
-        self.frwd_p = left
-        self.bkwd_p = right
-        self.enbl_p = enable_pin
-        self.turn_direction = 0.0; # [-1, 1]
-
-        GPIO.setup( [self.frwd_p, self.bkwd_p, self.enbl_p], GPIO.OUT, initial=False)
-
-        # frequency (Hz) second parameter
-        self.pwm = GPIO.PWM(self.enbl_p, 100)
-
-        self.pwm.start(0.0)
-
-        # initial direction: 0.0
-        # self.change_dir(True);
-
-    def set_direction(self, direction = 0.0, duty_cycle=40.0):
-        """ Set turn direction [-1, 1].
-            duty_cycle is max limit
-        """
-        self.turn_direction = direction;
-        if (direction < 0):
-            self.left(duty_cycle);
-        elif (direction > 0):
-            self.right(duty_cycle);
-        else:
-            self.reset();
-
-
-    def left(self, duty_cycle=40.0):
-        """Drive the motor forward.
-
-        Args:
-            duty_cycle (float, optional): The duty cycle to run the motor at.
-                Defaults to 40.0.
-        """
-        GPIO.output(self.frwd_p, True)
-        GPIO.output(self.bkwd_p, False)
-        self.pwm.ChangeDutyCycle(duty_cycle)
-
-    def right(self, duty_cycle=40.0):
-        """Drive the motor backward.
-
-        Args:
-            duty_cycle (float, optional): The duty cycle to run the motor at.
-                Defaults to 40.0.
-        """
-        GPIO.output(self.frwd_p, False)
-        GPIO.output(self.bkwd_p, True)
-        self.pwm.ChangeDutyCycle(duty_cycle)
-
-    def reset(self):
-        """ Set direction to straight.
-        """
-        #GPIO.output(self.frwd_p, False)
-        #GPIO.output(self.bkwd_p, False)
-        self.pwm.ChangeDutyCycle(0.0)
-
-    def cleanup(self):
-        """Cleanup the GPIO pins used by the motor.
-
-        Calling this releases the motor, so further use of the motor will not
-        be possible.
-        """
-        self.pwm.stop();
-        GPIO.cleanup( [self.frwd_p, self.bkwd_p, self.enbl_p])
-
-class SpeedMotor:
-    """Represents a Speed.
-    """
-
-    def __init__(self, forward_pin, backward_pin, enable_pin):
-        """Constructor.
-
-        Args:
-            forward_pin (int): GPIO pin connected to motor's forward pin.
-            backward_pin (int): GPIO pin connected to motor's backward pin.
-            enable_pin (int): GPIO pin connected to motor's enable pin
-        """
-        # store pins
-        self.frwd_p = forward_pin
-        self.bkwd_p = backward_pin
-        self.enbl_p = enable_pin
-
-        GPIO.setup( [self.frwd_p, self.bkwd_p, self.enbl_p], GPIO.OUT, initial=False)
-
-        # frequency (Hz) second parameter
-        self.pwm = GPIO.PWM(self.enbl_p, 100)
-
-        self.pwm.start(0.0)
-
-        # initial direction forward
-        self.change_dir(True);
-
-    def forward(self, duty_cycle=40.0):
-        """Drive the motor forward.
-
-        Args:
-            duty_cycle (float, optional): The duty cycle to run the motor at.
-                Defaults to 40.0.
-        """
-        GPIO.output(self.frwd_p, True)
-        GPIO.output(self.bkwd_p, False)
-        self.pwm.ChangeDutyCycle(duty_cycle)
-
-    def backward(self, duty_cycle=40.0):
-        """Drive the motor backward.
-
-        Args:
-            duty_cycle (float, optional): The duty cycle to run the motor at.
-                Defaults to 40.0.
-        """
-        GPIO.output(self.frwd_p, False)
-        GPIO.output(self.bkwd_p, True)
-        self.pwm.ChangeDutyCycle(duty_cycle)
-
-    def stop(self):
-        """Lock the motor to act as brake.
-        """
-        #GPIO.output(self.frwd_p, True)
-        #GPIO.output(self.bkwd_p, True)
-        self.pwm.ChangeDutyCycle(0.0)
-
-    def off(self):
-        """Disable power to motor to coast.
-        """
-        #GPIO.output(self.frwd_p, False)
-        #GPIO.output(self.bkwd_p, False)
-        self.pwm.ChangeDutyCycle(0.0)
-
-    def cleanup(self):
-        """Cleanup the GPIO pins used by the motor.
-
-        Calling this releases the motor, so further use of the motor will not
-        be possible.
-        """
-        self.pwm.stop();
-        GPIO.cleanup( [self.frwd_p, self.bkwd_p, self.enbl_p] )
-
-    def change_dir(self, forward=True):
-        GPIO.output(self.frwd_p, forward)
-        GPIO.output(self.bkwd_p, not forward)
+from ex import *;
 
 
 # ==================================================== temp
-
 
 
 ## Note  :
@@ -193,14 +25,14 @@ class SpeedMotor:
 
 
 # global
-EX_DIRECTION_PWM        = 18;
-EX_DIRECTION_LEFT       = 14;
-EX_DIRECTION_RIGHT      = 15;
+# EX_DIRECTION_PWM        = 18;
+# EX_DIRECTION_LEFT       = 14;
+# EX_DIRECTION_RIGHT      = 15;
 
 
-EX_SPEED_PWM            = 13;
-EX_SPEED_FORWARD        = 26;
-EX_SPEED_BACKWARD       = 19;
+# EX_SPEED_PWM            = 13;
+# EX_SPEED_FORWARD        = 26;
+# EX_SPEED_BACKWARD       = 19;
 
 
 # direction motor
