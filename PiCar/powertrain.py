@@ -102,12 +102,16 @@ class Powertrain:
         """
         #print("LDC: {0}, RDC: {1}".format(left_duty_cycle, right_duty_cycle))
         # if-else to use forward/backward
-        if (left_forward):
+        if left_duty_cycle < 20:
+            self.left.brake()
+        elif (left_forward):
             self.left.forward(left_duty_cycle)
         else:
             self.left.backward(left_duty_cycle)
 
-        if (right_forward):
+        if right_duty_cycle < 20:
+            self.right.brake()
+        elif (right_forward):
             self.right.forward(right_duty_cycle)
         else:
             self.right.backward(right_duty_cycle)
